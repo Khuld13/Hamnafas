@@ -1,0 +1,23 @@
+node_modules/
+dist/
+dist-ssr/
+
+# Secrets — never commit real API keys
+.env
+.env.local
+.env.*.local
+
+# SQLite database (live data, regenerated on server start)
+server/data/*.db
+server/data/*.db-shm
+server/data/*.db-wal
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+*.log
+npm-debug.log*
+
+# Qoder cache
+.qoder/
