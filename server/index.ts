@@ -5,6 +5,8 @@ import type { Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit, { ipKeyGenerator } from 'express-rate-limit';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { config } from './config.js';
 import { initializeDatabase } from './db/schema.js';
 import { closeDb } from './db/connection.js';
@@ -20,6 +22,11 @@ import authRouter from './routes/auth.js';
 import { runMigrations } from './db/schema.js';
 
 const SHUTDOWN_TIMEOUT_MS = 10_000;
+
+// ES modules have no __dirname, so derive it from import.meta.url.
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// server/index.ts compiles/runs from server/, so the built frontend sits one level up in dist/.
+const DIST_DIR = path.join(__dirname, '../dist');
 
 const app = express();
 
@@ -78,6 +85,25 @@ app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+/**
+ * Serve the built React app in production. Locally, the frontend is served by
+ * Vite on port 3000 instead, so this only matters on a deployed single-service
+ * host (Render, Railway, etc.) where this Express process is the only server.
+ *
+ * Must come after every /api/* route and before notFoundHandler: static files
+ * and the SPA fallback should never shadow a real API route, and 404s for
+ * unmatched /api/* paths should still hit notFoundHandler, not index.html.
+ */
+if (config.isProduction) {
+  app.use(express.static(DIST_DIR));
+
+  // Any non-API GET that isn't a static file is a client-side route (e.g.
+  // /chat, /screening) — hand it index.html so React Router can take over.
+  app.get(/^(?!\/api).*/, (_req: Request, res: Response) => {
+    res.sendFile(path.join(DIST_DIR, 'index.html'));
+  });
+}
+
 // Must stay last, and in this order: unmatched routes, then failures.
 app.use(notFoundHandler);
 app.use(errorHandler);
@@ -91,6 +117,9 @@ function startServer(): void {
     console.log(`   Environment: ${config.nodeEnv}`);
     console.log(`   CORS origin: ${config.corsOrigin}`);
     console.log(`   DashScope API key: ${config.dashscopeApiKey ? '✓ configured' : '✗ missing'}\n`);
+    if (config.isProduction) {
+      console.log(`   Serving frontend build from: ${DIST_DIR}\n`);
+    }
   });
 
   /**
