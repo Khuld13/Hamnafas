@@ -33,7 +33,7 @@
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "react-markdown": "^10.1.0",
-    "uuid": "^14.0.2",
+    "uuid": "^14.0.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
