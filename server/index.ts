@@ -1,7 +1,7 @@
 // Express app bootstrap: middleware, routes, graceful shutdown.
 
 import express from 'express';
-import type { Request, Response } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit, { ipKeyGenerator } from 'express-rate-limit';
@@ -95,12 +95,14 @@ app.get('/api/health', (_req: Request, res: Response) => {
  * unmatched /api/* paths should still hit notFoundHandler, not index.html.
  */
 if (config.isProduction) {
-  app.use(express.static(DIST_DIR));
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const distPath = path.resolve(__dirname, '..', 'dist');
 
-  // Any non-API GET that isn't a static file is a client-side route (e.g.
-  // /chat, /screening) — hand it index.html so React Router can take over.
-  app.get(/^(?!\/api).*/, (_req: Request, res: Response) => {
-    res.sendFile(path.join(DIST_DIR, 'index.html'));
+  app.use(express.static(distPath));
+
+  app.get('*', (req: Request, res: Response, next: NextFunction) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(distPath, 'index.html'));
   });
 }
 
