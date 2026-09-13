@@ -1,6 +1,6 @@
 # Hamnafas (ہم نفس) — Open-Access Mental Health AI Companion for Pakistan
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_Website-2ea44f?style=for-the-badge&logo=googlechrome&logoColor=white)](#-live-demo--project-links)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_Website-2ea44f?style=for-the-badge&logo=googlechrome&logoColor=white)](http://13.60.241.188/)
 [![Alibaba Cloud](https://img.shields.io/badge/Powered_By-Alibaba_Cloud_DashScope-ff6a00?style=for-the-badge&logo=alibabacloud&logoColor=white)](#-ai--cloud-architecture)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Fullstack-blue?style=for-the-badge&logo=typescript&logoColor=white)](#-project-layout)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](#)
@@ -11,7 +11,7 @@
 
 ## 🔗 Live Demo & Project Links
 
-* **Live Web Application:** [https://your-live-deployment-link.onrender.com](https://your-live-deployment-link.onrender.com)
+* **Live Web Application:** [http://13.60.241.188/](http://13.60.241.188/)
 * **Demo Video Walkthrough (2-3 min):** [Watch on YouTube / Loom](https://your-video-link-here.com)
 * **Slide Deck / Presentation:** [View Pitch Deck PDF](https://your-pitch-deck-link-here.com)
 
