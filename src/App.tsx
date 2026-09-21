@@ -16,13 +16,15 @@ import { DisclaimerModal } from './components/DisclaimerModal';
 import { LocalSupportModal } from './components/LocalSupportModal';
 import { ProgressReportModal } from './components/ProgressReportModal';
 import { Conversation, ChatMessage, MoodType, UserProfile, SupportedLanguage, ScreeningType, ScreeningResult, AuthUser, SoundscapeType, CareStreakData } from './types';
-import { INITIAL_CONVERSATIONS, MOOD_OPTIONS } from './data/mockData';
+import { MOOD_OPTIONS } from './data/mockData';
 import { DAILY_CARE_ITEMS } from './data/careRoutine';
 import { soundscapes } from './services/soundService';
 
 const STORAGE_KEY_CONVS = 'hamnafas_conversations_v2';
 const STORAGE_KEY_PROFILE = 'hamnafas_user_profile_v2';
 const STORAGE_KEY_CARE_STREAK = 'hamnafas_care_streak_v1';
+const STORAGE_KEY_MOOD = 'hamnafas_selected_mood_v1';
+const STORAGE_KEY_EXERCISE = 'hamnafas_interrupted_exercise_v1';
 
 const todayStr = () => new Date().toISOString().slice(0, 10);
 const isYesterday = (dateStr: string) => {
@@ -48,7 +50,7 @@ export default function App() {
     } catch (e) {
       console.warn('Storage read failed:', e);
     }
-    return INITIAL_CONVERSATIONS;
+    return [];
   });
 
   const [userProfile, setUserProfile] = useState<UserProfile>(() => {
@@ -81,11 +83,24 @@ export default function App() {
     userProfile.preferredLanguage || 'roman_urdu'
   );
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
-  const [selectedMood, setSelectedMood] = useState<MoodType | null>('Okay');
+  const [selectedMood, setSelectedMood] = useState<MoodType | null>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_MOOD);
+      return (saved as MoodType | null) || 'Okay';
+    } catch {
+      return 'Okay';
+    }
+  });
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Modals
-  const [isSelfHelpOpen, setIsSelfHelpOpen] = useState(false);
+  const [isSelfHelpOpen, setIsSelfHelpOpen] = useState(() => {
+    try {
+      return Boolean(localStorage.getItem(STORAGE_KEY_EXERCISE));
+    } catch {
+      return false;
+    }
+  });
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isScreeningOpen, setIsScreeningOpen] = useState(false);
   const [activeScreeningType, setActiveScreeningType] = useState<ScreeningType>('phq9');
@@ -95,7 +110,13 @@ export default function App() {
   const [activeSound, setActiveSound] = useState<string | null>(null);
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [selfHelpInitialExercise, setSelfHelpInitialExercise] = useState<string | null>(null);
+  const [selfHelpInitialExercise, setSelfHelpInitialExercise] = useState<string | null>(() => {
+    try {
+      return localStorage.getItem(STORAGE_KEY_EXERCISE);
+    } catch {
+      return null;
+    }
+  });
   const [hasSeenDisclaimer, setHasSeenDisclaimer] = useState<boolean>(
     () => localStorage.getItem('hamnafas_disclaimer_seen') === 'true'
   );
@@ -323,7 +344,7 @@ export default function App() {
   // Start chat from Home screen with selected mood & language
   const handleStartChatFromHome = () => {
     const activeMoodData = MOOD_OPTIONS.find((m) => m.id === selectedMood);
-    let initialGreeting = "Assalam-o-Alaikum Meera. Main aapke sath hoon. Aap kaisa mehsoos kar rahe hain?";
+    let initialGreeting = "Assalam-o-Alaikum. Main aapke sath hoon. Aap kaisa mehsoos kar rahe hain?";
 
     if (activeMoodData) {
       if (currentLanguage === 'roman_urdu') {
@@ -465,7 +486,7 @@ export default function App() {
 
     const assistantContent =
       currentLanguage === 'roman_urdu'
-        ? `Shukriya Meera. Humne aapka **${typeTitle}** record kar liya hai.
+        ? `Shukriya. Humne aapka **${typeTitle}** record kar liya hai.
 
 📊 **Score**: ${result.score} / ${result.maxScore} (${result.severityLevelRomanUrdu})
 📋 **Assessment**: ${result.summaryRomanUrdu}
@@ -474,7 +495,7 @@ export default function App() {
 ${recsList}
 
 Aap bilkul fikar na karein. Hum is par aahista aahista kaam kar sakte hain. Kis baat par pehle tawajjoh dena chahte hain?`
-        : `Thank you Meera. I have received your **${typeTitle}** results.
+        : `Thank you. I have received your **${typeTitle}** results.
 
 📊 **Score**: ${result.score} / ${result.maxScore} (${result.severityLevel})
 📋 **Assessment**: ${result.summaryEn}
@@ -574,7 +595,7 @@ How are you feeling seeing these findings? We can unpack them together with care
   const activeConversation = conversations.find((c) => c.id === activeConversationId);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#d9ebf8] text-[#243b53] select-none font-sans">
+    <div className="flex h-screen w-screen overflow-hidden bg-[#f5f9fc] text-[#173d60] font-sans">
       {/* Left Sidebar */}
       <Sidebar
         conversations={conversations}
@@ -588,6 +609,7 @@ How are you feeling seeing these findings? We can unpack them together with care
         onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenSelfHelp={(exerciseId) => {
           setSelfHelpInitialExercise(exerciseId ?? null);
+          if (exerciseId) localStorage.setItem(STORAGE_KEY_EXERCISE, exerciseId);
           setIsSelfHelpOpen(true);
         }}
         onOpenScreening={() => handleOpenScreening('phq9')}
@@ -607,6 +629,7 @@ How are you feeling seeing these findings? We can unpack them together with care
             onBackToHome={() => setActiveConversationId(null)}
             onOpenSelfHelp={(exerciseId) => {
               setSelfHelpInitialExercise(exerciseId ?? null);
+              if (exerciseId) localStorage.setItem(STORAGE_KEY_EXERCISE, exerciseId);
               setIsSelfHelpOpen(true);
             }}
             onOpenScreening={() => handleOpenScreening('phq9')}
@@ -627,6 +650,7 @@ How are you feeling seeing these findings? We can unpack them together with care
             onStartChat={handleStartChatFromHome}
             onOpenSelfHelp={(exerciseId) => {
               setSelfHelpInitialExercise(exerciseId ?? null);
+              if (exerciseId) localStorage.setItem(STORAGE_KEY_EXERCISE, exerciseId);
               setIsSelfHelpOpen(true);
             }}
             onOpenScreening={() => handleOpenScreening('phq9')}
@@ -694,6 +718,7 @@ How are you feeling seeing these findings? We can unpack them together with care
         onClose={() => {
           setIsSelfHelpOpen(false);
           setSelfHelpInitialExercise(null);
+          localStorage.removeItem(STORAGE_KEY_EXERCISE);
         }}
         initialExerciseId={selfHelpInitialExercise}
         onSelectScreening={handleOpenScreening}
@@ -701,6 +726,8 @@ How are you feeling seeing these findings? We can unpack them together with care
         onToggleSound={handleToggleAmbientSound}
         onOpenCrisis={() => {
           setIsSelfHelpOpen(false);
+          setSelfHelpInitialExercise(null);
+          localStorage.removeItem(STORAGE_KEY_EXERCISE);
           setIsCrisisOpen(true);
         }}
         lang={currentLanguage}

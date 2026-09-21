@@ -1,105 +1,15 @@
 import React from 'react';
 import {
-  ArrowRight,
-  ChevronRight,
-  Heart,
-  PanelLeftOpen,
-  Volume2,
-  VolumeX,
-  ClipboardCheck,
-  ShieldAlert,
-  Sparkles,
-  Globe,
-  Wind,
-  Compass,
-  BookOpen,
-  Home as HomeIcon,
-  CloudRain,
-  Waves,
-  Moon,
-  Fan,
-  Music2,
-  UserCircle2,
-  Flame,
+  ArrowRight, ShieldCheck, MessageCircle, ClipboardCheck, Wind, Compass,
+  BookOpen, HeartHandshake, PanelLeftOpen, Volume2, VolumeX, UserCircle2,
+  Sparkles, MapPin, Music2, SunMedium, AudioLines
 } from 'lucide-react';
 import { MoodType, UserProfile, SupportedLanguage, AuthUser, CareRoutineItem, CareStreakData, SoundscapeType } from '../types';
 import { MoodSelector } from './MoodSelector';
 import { CareStreak } from './CareStreak';
-import cozySceneImg from '../assets/images/hamnafas_cozy_scene_1788081010760.jpg';
+import cozyScene from '../assets/images/hamnafas_cozy_scene_1788081010760.jpg';
 
-const scrollToSection = (id: string) => {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-};
-
-// Kept to one short, plain-language line per idea — no stacked
-// English + Roman Urdu + clinical paragraph. Shown in whichever
-// language the person has already chosen, same as the hero copy.
-const HOW_IT_WORKS_STEPS = [
-  {
-    icon: HomeIcon,
-    en: 'No account needed — start talking whenever you need a listening ear.',
-    ru: 'Koi account nahi chahiye — jab bhi baat karni ho, foran shuru karein.',
-  },
-  {
-    icon: Globe,
-    en: 'Here for the everyday moments between doctor visits — daily check-ins, coping exercises, and someone to talk to.',
-    ru: 'Doctor ke dauron ke darmiyan rozmarra lamhon ke liye — rozana check-in, pur-sukoon mashqein aur guftagu.',
-  },
-  {
-    icon: Heart,
-    en: "Works alongside a doctor's care, not instead of it — a gentle companion for your wellbeing journey.",
-    ru: 'Doctor ya therapist ki dekhbhal ke sath sathi ban kar kaam karta hai — unki jagah nahi leta.',
-  },
-  {
-    icon: ShieldAlert,
-    en: 'We quietly watch for serious risk and connect you with verified human helplines and doctors if needed.',
-    ru: 'Shadeed takleef par khamoshi se hifazat karta hai aur foran verified insani helplines se jorta hai.',
-  },
-];
-
-interface ExercisePreview {
-  icon: any;
-  en: string;
-  ru: string;
-  durationEn: string;
-  accent: 'blue' | 'sage' | 'peach';
-  exerciseId: string;
-}
-
-const EXERCISE_PREVIEWS: ExercisePreview[] = [
-  { icon: Wind, en: 'Box Breathing', ru: 'Box Breathing', durationEn: '2 min', accent: 'blue', exerciseId: 'breathing-box' },
-  { icon: Sparkles, en: 'Slow Breath for Sleep', ru: 'Neend Wali Saans', durationEn: '3 min', accent: 'peach', exerciseId: 'breathing-478' },
-  { icon: Compass, en: 'Notice What\u2019s Around You', ru: 'Ird-gird Dhyan', durationEn: '4 min', accent: 'sage', exerciseId: 'grounding-54321' },
-  { icon: BookOpen, en: 'One Good Thing Today', ru: 'Aaj ki Achi Baat', durationEn: '2 min', accent: 'blue', exerciseId: 'gratitude-journal' },
-];
-
-const ACCENT_STYLES: Record<ExercisePreview['accent'], string> = {
-  blue: 'bg-[#e3effa] text-[#2b5984]',
-  sage: 'bg-[#e9f0e3] text-[#4c6b43]',
-  peach: 'bg-[#faead9] text-[#b8703a]',
-};
-
-const CALMING_REFLECTIONS = [
-  { en: "You don't have to have it figured out today.", ru: 'Aaj sab kuch samajhna zaroori nahi.' },
-  { en: "Rest isn't something you earn. It's something you're allowed.", ru: 'Aaraam kamana nahi parta, yeh haq hai.' },
-  { en: 'Small steps still count as moving forward.', ru: 'Chhote qadam bhi aage barhna hi hote hain.' },
-];
-
-interface SoundOption {
-  id: SoundscapeType;
-  icon: any;
-  labelEn: string;
-  labelRu: string;
-}
-
-const SOUND_OPTIONS: SoundOption[] = [
-  { id: 'rain', icon: CloudRain, labelEn: 'Soft Rain', labelRu: 'Barish' },
-  { id: 'breeze', icon: Wind, labelEn: 'Cool Breeze', labelRu: 'Thandi Hawa' },
-  { id: 'river', icon: Waves, labelEn: 'Flowing River', labelRu: 'Behta Pani' },
-  { id: 'night', icon: Moon, labelEn: 'Quiet Night', labelRu: 'Khamosh Raat' },
-  { id: 'fan', icon: Fan, labelEn: 'Steady Fan', labelRu: 'Pankha' },
-  { id: 'tanpura', icon: Music2, labelEn: 'Gentle Tanpura', labelRu: 'Halka Tanpura' },
-];
+const scrollToSection = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
 interface HomeViewProps {
   userProfile: UserProfile;
@@ -123,401 +33,209 @@ interface HomeViewProps {
   onOpenProgressReport?: () => void;
 }
 
+const EXERCISES = [
+  { icon: Wind, titleEn: 'Box Breathing', titleRu: 'Box Breathing', meta: '2 min · Breathe', id: 'breathing-box', textEn: 'Slow the pace and give your body a simple rhythm.', textRu: 'Saans ko aahista karein aur jism ko ek simple rhythm dein.' },
+  { icon: Compass, titleEn: '5–4–3–2–1 Grounding', titleRu: '5–4–3–2–1 Grounding', meta: '3 min · Ground', id: 'grounding-54321', textEn: 'Come back to what you can see, touch and hear around you.', textRu: 'Jo cheezein aap dekh, chhoo aur sun sakte hain un par wapas tawajjoh dein.' },
+  { icon: BookOpen, titleEn: 'Three Good Things', titleRu: 'Three Good Things', meta: '2 min · Reflect', id: 'gratitude-journal', textEn: 'Notice three small things worth keeping from today.', textRu: 'Aaj ki teen choti achi cheezein notice karein.' },
+];
+
+const MUSIC = [
+  { id: 'uplift' as SoundscapeType, icon: Sparkles, en: 'Uplift', ru: 'Mood halka karein' },
+  { id: 'sunrise' as SoundscapeType, icon: SunMedium, en: 'Sunrise', ru: 'Subah jaisi warmth' },
+  { id: 'flow' as SoundscapeType, icon: AudioLines, en: 'Soft Flow', ru: 'Naram musical flow' },
+  { id: 'tanpura' as SoundscapeType, icon: Music2, en: 'Tanpura Calm', ru: 'Halka Tanpura' },
+];
+
 export const HomeView: React.FC<HomeViewProps> = ({
-  userProfile,
-  selectedMood,
-  onSelectMood,
-  onStartChat,
-  onOpenSelfHelp,
-  onOpenScreening,
-  onOpenCrisis,
-  onToggleSidebar,
-  sidebarOpen,
-  activeSound,
-  onToggleSound,
-  currentLanguage,
-  authUser,
-  onOpenAuth,
-  careItems,
-  careStreak,
-  onToggleCareItem,
-  onOpenProgressReport,
+  userProfile, selectedMood, onSelectMood, onStartChat, onOpenSelfHelp, onOpenScreening,
+  onOpenCrisis, onToggleSidebar, sidebarOpen, activeSound, onToggleSound,
+  currentLanguage, onChangeLanguage, authUser, onOpenAuth, careItems, careStreak,
+  onToggleCareItem, onOpenProgressReport,
 }) => {
   const isRu = currentLanguage === 'roman_urdu';
+  const displayName = authUser?.email?.split('@')[0] || userProfile.name || 'Guest';
+  const tr = (en: string, ru: string) => isRu ? ru : en;
 
   return (
-    <div className="relative min-h-full flex-1 flex flex-col justify-between overflow-x-hidden overflow-y-auto bg-gradient-to-b from-[#d9ebf8] via-[#e7f2fc] to-[#eef6fb]">
-      {/* Delicate watercolor botanical branch in top left */}
-      <div className="absolute top-0 left-0 w-44 sm:w-64 h-44 sm:h-64 pointer-events-none opacity-40 z-10">
-        <svg viewBox="0 0 200 200" fill="none" className="w-full h-full text-[#4a7298]">
-          <path d="M-20 -20 C 40 40, 80 70, 130 110" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M30 20 C 45 10, 60 25, 45 40 C 30 35, 25 25, 30 20 Z" fill="#6d9bbd" opacity="0.75" />
-          <path d="M60 45 C 80 40, 90 60, 75 75 C 60 70, 55 55, 60 45 Z" fill="#5f8fae" opacity="0.8" />
-          <path d="M95 75 C 115 65, 125 90, 110 105 C 95 100, 85 85, 95 75 Z" fill="#7ba8c9" opacity="0.75" />
-          <path d="M45 55 C 30 70, 45 90, 60 85 C 65 70, 55 60, 45 55 Z" fill="#5584a4" opacity="0.7" />
-          <path d="M80 90 C 70 110, 90 125, 105 115 C 105 100, 95 90, 80 90 Z" fill="#6896b7" opacity="0.65" />
-          <path d="M120 105 C 140 100, 150 120, 135 135 C 120 130, 115 115, 120 105 Z" fill="#507c9b" opacity="0.75" />
-        </svg>
-      </div>
-
-      {/* Atmospheric Cozy Room Artwork Background — confined to the hero only */}
-      <div className="absolute top-0 right-0 w-full h-[640px] lg:w-[48%] xl:w-[50%] pointer-events-none overflow-hidden select-none z-0">
-        <img
-          src={cozySceneImg}
-          alt="Cozy armchair and serene arched window"
-          className="w-full h-full object-cover object-center lg:object-left opacity-85 mix-blend-multiply"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#d9ebf8] via-[#e5f1fc]/80 to-transparent w-full lg:w-[35%]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#eef6fb] via-transparent to-transparent h-40 bottom-0" />
-      </div>
-
-      {/* Floating Sparkle Ambient Particles */}
-      <div className="absolute top-0 left-0 right-0 h-[640px] pointer-events-none z-10 overflow-hidden">
-        <div className="absolute top-[18%] left-[62%] w-1.5 h-1.5 rounded-full bg-white/80 shadow-[0_0_8px_white] animate-pulse" />
-        <div className="absolute top-[28%] left-[78%] w-2 h-2 rounded-full bg-white/90 shadow-[0_0_10px_white] animate-ping opacity-60" style={{ animationDuration: '4s' }} />
-        <div className="absolute top-[42%] left-[68%] w-1 h-1 rounded-full bg-white/70 shadow-[0_0_6px_white] animate-pulse" style={{ animationDuration: '3s' }} />
-      </div>
-
-      {/* Top Navbar Header — single row layout */}
-      <header className="relative z-20 w-full px-4 sm:px-8 py-3.5 flex items-center justify-between gap-2 sm:gap-4 max-w-7xl mx-auto">
-        {/* Left: Mobile Sidebar Opener & Crisis Quick Link */}
-        <div className="flex items-center gap-2 shrink-0">
-          {!sidebarOpen && (
-            <button
-              id="open-sidebar-main-btn"
-              onClick={onToggleSidebar}
-              className="p-2.5 rounded-xl bg-white/80 hover:bg-white text-[#1e3a5f] shadow-xs border border-white/80 transition-all cursor-pointer"
-              title="Open menu"
-            >
-              <PanelLeftOpen className="w-5 h-5 stroke-[1.8]" />
+    <div className="flex-1 h-full overflow-y-auto hm-page-bg text-[#173d60]">
+      <header className="sticky top-0 z-30 border-b border-[#dce8f2] bg-white/95 backdrop-blur-sm">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-3">
+            {!sidebarOpen && <button onClick={onToggleSidebar} className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#dce8f2] bg-white text-[#49657f] lg:hidden" aria-label="Open menu"><PanelLeftOpen className="h-5 w-5" /></button>}
+            <button onClick={() => scrollToSection('home')} className="flex items-center gap-2 text-left" aria-label="Hamnafas home">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#dcebf8] text-[#173d60]"><HeartHandshake className="h-5 w-5" /></span>
+              <span><span className="block font-serif text-[1.45rem] leading-none text-[#173d60]">Hamnafas</span><span className="hidden text-[9px] font-semibold uppercase tracking-[.14em] text-[#5f7488] sm:block">For the moments in between</span></span>
             </button>
-          )}
-
-          <button
-            onClick={onOpenCrisis}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-50/90 hover:bg-rose-100 text-rose-800 border border-rose-200/80 text-xs font-semibold shadow-xs transition-all cursor-pointer backdrop-blur-xs shrink-0"
-            title="Pakistan 24/7 Crisis Helplines"
-          >
-            <ShieldAlert className="w-3.5 h-3.5 text-rose-600" />
-            <span className="hidden md:inline">Pakistani Crisis Support</span>
-            <span className="md:hidden">Helplines</span>
-          </button>
-        </div>
-
-        {/* Center: Section Jump Nav — moved upward into the same line */}
-        <nav className="flex items-center justify-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar whitespace-nowrap px-1">
-          {[
-            { id: 'home', label: 'Home' },
-            { id: 'how-it-works', label: 'How It Works' },
-            { id: 'exercises', label: 'Exercises' },
-            { id: 'streak', label: isRu ? 'Silsila' : 'Your Streak' },
-            { id: 'entertainment', label: 'Unwind' },
-          ].map((item) => (
-            <button
-              key={item.id}
-              onClick={() => scrollToSection(item.id)}
-              className="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/80 hover:bg-white text-slate-800 border border-white/90 shadow-xs transition-all cursor-pointer shrink-0"
-            >
-              {item.label}
-            </button>
-          ))}
-        </nav>
-
-        {/* Right: Immediate Streak Pill, Ambient Sound, Sign In */}
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-          {careStreak && (
-            <button
-              onClick={() => scrollToSection('streak')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-md transition-all shadow-xs border cursor-pointer shrink-0 ${
-                careStreak.streak > 0
-                  ? 'bg-[#faead9]/90 text-[#b8703a] border-[#f0cba0] hover:bg-[#faead9]'
-                  : 'bg-white/80 text-[#627d98] border-white/90 hover:bg-white'
-              }`}
-              title={isRu ? 'Apna daily care silsila dekhein' : 'View your daily care streak'}
-            >
-              <Flame className={`w-3.5 h-3.5 ${careStreak.streak > 0 ? 'text-[#b8703a] animate-flame' : 'text-[#829ab1]'}`} />
-              <span className="text-xs font-semibold">
-                {careStreak.streak > 0
-                  ? isRu
-                    ? `${careStreak.streak} din ka silsila`
-                    : `${careStreak.streak} day streak`
-                  : isRu
-                  ? '0 din ka silsila'
-                  : '0 day streak'}
-              </span>
-            </button>
-          )}
-
-          {/* Ambient Sound Toggle Button */}
-          <button
-            id="ambient-sound-toggle-btn"
-            onClick={() => onToggleSound()}
-            className={`p-2.5 rounded-full backdrop-blur-md transition-all shadow-xs border cursor-pointer shrink-0 ${
-              activeSound ? 'bg-[#1e3a5f] text-white border-[#1e3a5f]' : 'bg-white/75 hover:bg-white text-[#334e68] border-white/80'
-            }`}
-            title={activeSound ? `Ambient sound active (${activeSound}) - Click to mute` : 'Turn on a relaxing sound'}
-          >
-            {activeSound ? (
-              <div className="flex items-center gap-1.5 px-1">
-                <Volume2 className="w-4 h-4 animate-bounce" />
-                <span className="text-xs font-medium capitalize hidden lg:inline">{activeSound}</span>
-              </div>
-            ) : (
-              <VolumeX className="w-4 h-4" />
-            )}
-          </button>
-
-          {/* Sign In / Account Avatar — visible top-right for everyone, not just via sidebar */}
-          <button
-            id="home-sign-in-btn"
-            onClick={onOpenAuth}
-            className={
-              authUser
-                ? "w-8 h-8 rounded-full bg-[#1e3a5f] hover:bg-[#102a43] text-white font-bold flex items-center justify-center text-xs shadow-xs transition-all cursor-pointer ring-2 ring-white/60 shrink-0"
-                : "flex items-center gap-1.5 pl-2 pr-3 py-1 rounded-full bg-[#1e3a5f] hover:bg-[#102a43] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer shrink-0"
-            }
-            title={authUser ? authUser.email : 'Sign in to keep your history across devices'}
-            aria-label={authUser ? `Account for ${authUser.email}` : 'Sign In'}
-          >
-            {authUser ? (
-              <span>{authUser.email.charAt(0).toUpperCase()}</span>
-            ) : (
-              <>
-                <UserCircle2 className="w-4 h-4" />
-                <span>Sign In</span>
-              </>
-            )}
-          </button>
+          </div>
+          <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
+            {[["how-it-works", tr('How it works','Kaise kaam karta hai')],["exercises",tr('Exercises','Exercises')],["streak",tr('Silsila','Silsila')],["entertainment",tr('Unwind','Unwind')]].map(([id,label]) => <button key={id} onClick={() => scrollToSection(id)} className="rounded-lg px-3 py-2 text-sm font-medium text-[#49657f] hover:bg-[#edf5fb] hover:text-[#173d60]">{label}</button>)}
+          </nav>
+          <div className="flex items-center gap-2">
+            <button onClick={onOpenCrisis} className="hidden items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold text-[#49657f] hover:bg-[#edf5fb] sm:flex" title={tr('Support and emergency resources','Madad aur emergency resources')}><ShieldCheck className="h-4 w-4" /> {tr('Support','Madad')}</button>
+            <button onClick={() => onToggleSound()} className={`flex h-10 items-center gap-2 rounded-xl border px-3 text-xs font-semibold ${activeSound ? 'border-[#173d60] bg-[#173d60] text-white' : 'border-[#dce8f2] bg-white text-[#49657f]'}`} aria-label={activeSound ? 'Mute music' : 'Play music'}>{activeSound ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}<span className="hidden lg:inline">{activeSound ? 'Music' : tr('Music','Music')}</span></button>
+            <button onClick={onOpenAuth} className="flex h-10 items-center gap-2 rounded-xl bg-[#173d60] px-3 text-xs font-semibold text-white" aria-label={authUser ? `Account for ${authUser.email}` : 'Sign in'}>{authUser ? <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/15">{authUser.email.charAt(0).toUpperCase()}</span> : <UserCircle2 className="h-4 w-4" />}<span className="hidden sm:inline">{authUser ? displayName : tr('Sign in','Sign in')}</span></button>
+          </div>
         </div>
       </header>
 
-      {/* Main Center Stage */}
-      <main id="home" className="relative z-20 flex-1 flex flex-col items-center justify-center px-4 sm:px-8 py-3 max-w-4xl mx-auto w-full text-center">
-        {/* Main Emotional Headline */}
-        <div className="space-y-1 sm:space-y-2 mb-3 sm:mb-4">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-normal text-[#1e3a5f] tracking-tight leading-tight">
-            {currentLanguage === 'roman_urdu' ? 'Khush Amdeed,' : 'Welcome back,'}
-          </h1>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif italic font-normal text-[#14324f] tracking-tight leading-tight">
-            {currentLanguage === 'roman_urdu' ? 'Hamnafas aapke sath hai.' : 'Hamnafas is here for you.'}
-          </h2>
-
-          <p className="text-sm sm:text-base font-serif italic text-[#3b668f] max-w-xl mx-auto pt-1 leading-relaxed">
-            &ldquo;Hamnafas — a companion to breathe with, before you&apos;re ready to talk to anyone else.&rdquo;
-          </p>
-
-          <div className="flex items-center justify-center gap-3 pt-2 pb-1">
-            <div className="h-[1px] w-12 sm:w-16 bg-[#a7c5df]/60" />
-            <Heart className="w-3.5 h-3.5 text-[#5e8db7] fill-[#5e8db7]/20" />
-            <div className="h-[1px] w-12 sm:w-16 bg-[#a7c5df]/60" />
+      <main id="home">
+        <section className="relative min-h-[calc(100vh-4rem)] overflow-hidden bg-[#e3f2fa]" aria-label="Hamnafas welcome">
+          {/* The room is the atmosphere of the product, not a separate card. */}
+          <div className="absolute inset-0">
+            <img src={cozyScene} alt="A calm, sunlit room representing the Hamnafas space" className="h-full w-full object-cover object-[68%_center]" />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(227,242,250,.99)_0%,rgba(227,242,250,.96)_28%,rgba(227,242,250,.82)_48%,rgba(227,242,250,.34)_68%,rgba(227,242,250,.04)_86%,rgba(227,242,250,0)_100%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(227,242,250,.30)_0%,rgba(227,242,250,0)_32%,rgba(227,242,250,.16)_100%)]" />
           </div>
-        </div>
-
-        {/* Subtitle & Check-in Prompt */}
-        <div className="space-y-1 mb-4 sm:mb-5">
-          <h3 className="text-xl sm:text-2xl font-semibold text-[#102a43]">
-            {currentLanguage === 'roman_urdu' ? 'Aaj aap kaisa mehsoos kar rahe hain?' : 'How are you feeling today?'}
-          </h3>
-          <p className="text-base text-[#486581] font-normal">
-            {currentLanguage === 'roman_urdu' ? 'Lafzon mein bayan karna zaroori nahi, bas apna mood chunein.' : 'You don\u2019t have to put it into words.'}
-          </p>
-        </div>
-
-        {/* 6 Mood Cards in Horizontal Row */}
-        <div className="w-full max-w-2xl mb-5 sm:mb-6">
-          <MoodSelector selectedMood={selectedMood} onSelectMood={onSelectMood} />
-        </div>
-
-        {/* Action Banner: "Talk to Hamnafas" — Warm Peach accent border to bring the 5th palette color into play */}
-        <div className="w-full max-w-2xl bg-white/75 backdrop-blur-md border border-[#f0cba0]/70 rounded-2xl p-4 sm:p-4.5 shadow-[0_8px_30px_rgba(40,80,120,0.07)] flex flex-col sm:flex-row items-center justify-between gap-4 transition-all hover:bg-white/85">
-          <div className="flex items-center gap-3.5 text-left">
-            <div className="w-10 h-10 rounded-xl bg-[#faead9] text-[#b8703a] flex items-center justify-center shrink-0">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" fill="#e8a668" fillOpacity="0.4" />
-                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
-              </svg>
-            </div>
-            <div>
-              <h4 className="text-base sm:text-lg font-semibold text-[#102a43]">
-                {currentLanguage === 'roman_urdu' ? 'Har waqt theek hona zaroori nahi.' : 'It\u2019s okay to not be okay.'}
-              </h4>
-              <p className="text-sm sm:text-base text-[#486581]">
-                {currentLanguage === 'roman_urdu' ? 'Baat karne se dil halka hota hai. Hum aapki raftaar se chalenge.' : 'Talking helps. We\u2019ll go at your pace.'}
-              </p>
-            </div>
-          </div>
-
-          <button
-            id="talk-to-hamnafas-main-btn"
-            onClick={onStartChat}
-            className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-[#1e3a5f] hover:bg-[#102a43] active:scale-[0.98] text-white font-medium text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer shrink-0"
-          >
-            <span>Talk to Hamnafas</span>
-            <ArrowRight className="w-4 h-4 stroke-[2]" />
-          </button>
-        </div>
-
-        {/* Secondary Action Bar: PHQ-9 / GAD-7 Screening & Self-Help */}
-        <div className="mt-4 w-full max-w-2xl flex flex-wrap items-center justify-center gap-3">
-          <button
-            id="take-screening-btn"
-            onClick={onOpenScreening}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 hover:bg-white text-[#1e3a5f] border border-[#cbdbe8] hover:border-[#8cb7db] text-xs font-semibold shadow-xs transition-all cursor-pointer backdrop-blur-xs"
-          >
-            <ClipboardCheck className="w-4 h-4 text-[#2b5984]" />
-            <span>PHQ-9 & GAD-7 Clinical Screening</span>
-          </button>
-
-          <button
-            id="explore-resources-btn"
-            onClick={() => onOpenSelfHelp()}
-            className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/60 hover:bg-white/90 text-[#334e68] text-xs font-medium transition-all cursor-pointer border border-[#d6e7f7]"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-[#5e8db7]" />
-            <span>Self-Help & Calming Tools</span>
-            <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 text-[#5e8db7]" />
-          </button>
-        </div>
-      </main>
-
-      {/* Gentle divider instead of a hard color band */}
-      <div className="relative z-20 max-w-md mx-auto w-full h-px bg-gradient-to-r from-transparent via-[#a7c5df]/50 to-transparent mt-10" />
-
-      {/* ================= How Hamnafas Works ================= */}
-      <section id="how-it-works" className="relative z-20 w-full px-6 py-12">
-        <div className="max-w-5xl mx-auto text-center mb-8">
-          <h2 className="text-3xl sm:text-4xl font-serif text-[#1e3a5f] mb-2">
-            {isRu ? 'Hamnafas Kaam Kaise Karta Hai' : 'How Hamnafas Works'}
-          </h2>
-          <p className="text-sm text-[#486581]">{isRu ? 'Chaar baatein, shuru karne se pehle.' : 'Four things worth knowing before you start talking.'}</p>
-        </div>
-        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {HOW_IT_WORKS_STEPS.map((step, idx) => {
-            const Icon = step.icon;
-            return (
-              <div key={idx} className="p-4 rounded-2xl bg-white/85 border border-[#d6e7f7] shadow-xs flex gap-3.5 items-center">
-                <div className="w-10 h-10 rounded-xl bg-[#e3effa] text-[#2b5984] flex items-center justify-center shrink-0">
-                  <Icon className="w-5 h-5" />
+          <div className="pointer-events-none absolute -left-16 top-24 h-64 w-64 rounded-full bg-white/25 blur-3xl" />
+          <div className="relative z-10 mx-auto flex min-h-[calc(100vh-4rem)] max-w-7xl items-center px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+            <div className="w-full max-w-[760px] lg:w-[62%]">
+              <div className="mb-5 flex flex-wrap items-center gap-2">
+                <span className="rounded-full border border-[#bfd8e8] bg-white/82 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.12em] text-[#2d638f] shadow-sm">Built in Pakistan</span>
+                <div className="flex rounded-full border border-[#bfd8e8] bg-white/88 p-0.5 shadow-sm" role="group" aria-label="Language">
+                  <button onClick={() => onChangeLanguage?.('english')} className={`rounded-full px-3 py-1.5 text-[10px] font-bold ${!isRu ? 'bg-[#173d60] text-white' : 'text-[#49657f]'}`}>English</button>
+                  <button onClick={() => onChangeLanguage?.('roman_urdu')} className={`rounded-full px-3 py-1.5 text-[10px] font-bold ${isRu ? 'bg-[#173d60] text-white' : 'text-[#49657f]'}`}>Roman Urdu</button>
                 </div>
-                <p className="text-sm text-[#334e68] leading-snug text-left">{isRu ? step.ru : step.en}</p>
               </div>
-            );
-          })}
-        </div>
-      </section>
 
-      <div className="relative z-20 max-w-md mx-auto w-full h-px bg-gradient-to-r from-transparent via-[#bcd6ac]/50 to-transparent" />
+              <h1 className="max-w-[760px] font-serif text-5xl leading-[.94] tracking-[-.035em] text-[#173d60] sm:text-6xl lg:text-[5.35rem]">{tr('A calmer place to put your thoughts.','Apni baaton ke liye ek pur-sukoon jagah.')}</h1>
+              <p className="mt-6 max-w-[650px] text-base leading-7 text-[#365c7b] sm:text-lg">{tr('Hamnafas is an AI companion for the moments when talking to someone feels difficult. Talk naturally, check in with yourself, try a small exercise, and find human support when you need it.','Hamnafas un lamhon ka AI companion hai jab kisi se baat karna mushkil lagta hai. Apni baat karein, mood check karein, chhoti exercise try karein aur zaroorat par insani madad tak pohanchein.')}</p>
+              <p className="mt-3 max-w-[620px] text-sm leading-6 text-[#5d7890]">{isRu ? 'Jo kehna mushkil lag raha ho, wahan se shuru karein.' : 'You do not need the right words. Start with how you feel.'}</p>
 
-      {/* ================= Exercises ================= */}
-      <section id="exercises" className="relative z-20 w-full px-6 py-12">
-        <div className="max-w-5xl mx-auto text-center mb-8">
-          <h2 className="text-3xl sm:text-4xl font-serif text-[#102a43] mb-2">{isRu ? 'Chhoti Exercises' : 'Quick Exercises'}</h2>
-          <p className="text-sm text-[#486581]">{isRu ? 'Kuch minute bhi bohot farq daal sakte hain. Ek chun kar abhi try karein.' : 'A few minutes can shift a lot. Pick one and try it now.'}</p>
-        </div>
-        <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {EXERCISE_PREVIEWS.map((ex, idx) => {
-            const Icon = ex.icon;
-            return (
-              <button
-                key={idx}
-                onClick={() => onOpenSelfHelp(ex.exerciseId)}
-                className="group p-4 rounded-2xl bg-white border border-[#d6e7f7] hover:border-[#8cb7db] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 text-left cursor-pointer flex flex-col gap-2"
-              >
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 ${ACCENT_STYLES[ex.accent]}`}>
-                  <Icon className="w-5 h-5" />
+              <div className="mt-9 max-w-[760px] rounded-[28px] border border-white/80 bg-white/72 p-5 shadow-[0_20px_60px_rgba(48,91,119,.10)] backdrop-blur-[8px] sm:p-6">
+                <div className="flex flex-wrap items-end justify-between gap-3">
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[.12em] text-[#6e899f]">{tr('First step','Pehla qadam')}</p>
+                    <h2 className="mt-1 font-serif text-2xl text-[#173d60] sm:text-3xl">{tr('How are you feeling right now?','Abhi aap kaisa mehsoos kar rahe hain?')}</h2>
+                    <p className="mt-1 text-xs text-[#5e7890]">{tr('You can start with a feeling — no explanation needed.','Bas apna mood choose karein — koi explanation zaroori nahi.')}</p>
+                  </div>
+                  <span className="rounded-full bg-[#eaf4fb]/90 px-2.5 py-1 text-[10px] font-bold text-[#2d638f]">{tr('Mood check-in','Mood check-in')}</span>
                 </div>
-                <h4 className="text-xs font-bold text-[#102a43] leading-snug">{isRu ? ex.ru : ex.en}</h4>
-                <p className="text-[10px] text-[#829ab1]">{ex.durationEn}</p>
-              </button>
-            );
-          })}
-        </div>
-        <div className="text-center mt-6">
-          <button
-            onClick={() => onOpenSelfHelp()}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1e3a5f] hover:bg-[#102a43] text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
-          >
-            {isRu ? 'Sab exercises dekhein' : 'See all exercises'}
-          </button>
-        </div>
-      </section>
+                <div className="mt-5">
+                  <MoodSelector selectedMood={selectedMood} onSelectMood={onSelectMood} />
+                </div>
+              </div>
 
-      <div className="relative z-20 max-w-md mx-auto w-full h-px bg-gradient-to-r from-transparent via-[#f0cba0]/60 to-transparent" />
+              {careItems && careStreak && onToggleCareItem && (
+                <div className="mt-4 flex flex-wrap items-center gap-2.5">
+                  <button
+                    onClick={() => scrollToSection('streak')}
+                    className="group inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/62 px-3.5 py-2 text-left shadow-[0_8px_24px_rgba(48,91,119,.07)] backdrop-blur-[8px] transition hover:bg-white/82"
+                    aria-label={tr('Open daily care streak','Rozana care streak kholen')}
+                  >
+                    <span className={`flex h-7 w-7 items-center justify-center rounded-full ${careStreak.streak > 0 ? 'bg-[#f7e3ce] text-[#2b6f9f]' : 'bg-[#edf5fc] text-[#7ba8c9]'}`}>
+                      <span aria-hidden="true" className="text-sm">🔥</span>
+                    </span>
+                    <span>
+                      <span className="block text-[11px] font-bold leading-tight text-[#173d60]">
+                        {careStreak.streak > 0
+                          ? `${careStreak.streak}-day ${tr('care streak','care streak')}`
+                          : tr('Start your care streak','Care streak aaj se shuru karein')}
+                      </span>
+                      <span className="mt-0.5 block text-[10px] leading-tight text-[#668199]">
+                        {careStreak.completedToday.length}/{careItems.length} {tr('today','aaj')} · {tr('small steps count','chhoti cheezein count karti hain')}
+                      </span>
+                    </span>
+                    <ArrowRight className="ml-1 h-3.5 w-3.5 text-[#6b8ca6] transition-transform group-hover:translate-x-0.5" />
+                  </button>
+                </div>
+              )}
 
-      {/* ================= Daily Care Streak — light, guilt-free engagement ================= */}
-      {careItems && careStreak && onToggleCareItem && (
-        <section id="streak" className="relative z-20 w-full px-6 py-12">
-          <div className="max-w-3xl mx-auto text-center mb-6">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#faead9] text-[#b8703a] text-[11px] font-semibold mb-2">
-              <Flame className="w-3.5 h-3.5" />
-              <span>{isRu ? 'Chhota sa silsila' : 'A tiny daily habit'}</span>
+              <div className="mt-4 flex flex-wrap items-center gap-3">
+                <button onClick={onStartChat} className="inline-flex items-center gap-2 rounded-xl bg-[#173d60] px-5 py-3 text-sm font-bold text-white shadow-[0_10px_28px_rgba(23,61,96,.20)] hover:bg-[#204d74]">{tr('Talk to Hamnafas','Hamnafas se baat karein')} <ArrowRight className="h-4 w-4" /></button>
+                <button onClick={() => scrollToSection('exercises')} className="inline-flex items-center gap-2 rounded-xl border border-white/90 bg-white/78 px-5 py-3 text-sm font-bold text-[#173d60] shadow-sm backdrop-blur-sm hover:bg-white">{tr('Try an exercise','Exercise karein')}</button>
+              </div>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-serif text-[#102a43] mb-1.5">
-              {isRu ? 'Aaj Aap Kya Kar Chuke Hain?' : 'What Have You Done for Yourself Today?'}
-            </h2>
-            <p className="text-sm text-[#486581]">
-              {isRu ? 'Koi pressure nahi — bas chhoti chhoti cheezon ka hisaab, apne liye.' : 'No pressure — just a gentle tally of small things, for you.'}
-            </p>
-          </div>
-          <div className="max-w-2xl mx-auto p-5 rounded-2xl bg-white/85 border border-[#e2ecf5] shadow-xs">
-            <CareStreak
-              items={careItems}
-              data={careStreak}
-              onToggleItem={onToggleCareItem}
-              lang={currentLanguage}
-              onOpenProgressReport={onOpenProgressReport}
-            />
           </div>
         </section>
-      )}
 
-      <div className="relative z-20 max-w-md mx-auto w-full h-px bg-gradient-to-r from-transparent via-[#a7c5df]/50 to-transparent" />
-
-      {/* ================= Entertainment / Unwind ================= */}
-      <section id="entertainment" className="relative z-20 w-full px-6 py-12">
-        <div className="max-w-5xl mx-auto text-center mb-8">
-          <h2 className="text-3xl sm:text-4xl font-serif text-[#1e3a5f] mb-2">{isRu ? 'Thori Der Sukoon Se' : 'Unwind for a Moment'}</h2>
-          <p className="text-sm text-[#486581]">
-            {isRu ? 'Har kisi ke liye alag aawaz sukoon deti hai — kuch try karein.' : 'What feels calming differs from person to person — try a few and see what fits.'}
-          </p>
-        </div>
-
-        <div className="max-w-3xl mx-auto grid grid-cols-2 sm:grid-cols-3 gap-3 mb-10">
-          {SOUND_OPTIONS.map((s) => {
-            const Icon = s.icon;
-            const active = activeSound === s.id;
-            return (
-              <button
-                key={s.id}
-                onClick={() => onToggleSound(s.id)}
-                className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex items-center gap-2.5 ${
-                  active ? 'bg-[#1e3a5f] border-[#1e3a5f] text-white shadow-md' : 'bg-white border-[#cbdbe8] text-[#244f77] hover:border-[#8cb7db] hover:shadow-xs'
-                }`}
-              >
-                <Icon className={`w-4.5 h-4.5 shrink-0 ${active ? 'animate-pulse' : ''}`} />
-                <div className="min-w-0">
-                  <p className="text-xs font-bold leading-none truncate">{s.labelEn}</p>
-                  <p className="text-[10px] opacity-75 mt-1 truncate">{s.labelRu}</p>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="max-w-2xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {CALMING_REFLECTIONS.map((r, idx) => (
-            <div key={idx} className="p-4 rounded-2xl bg-white/80 border border-[#cbdbe8] text-center">
-              <p className="text-xs text-[#244f77] italic leading-relaxed">&ldquo;{r.en}&rdquo;</p>
-              <p className="text-[10px] text-[#5e8db7] mt-1.5">{r.ru}</p>
+        <section className="bg-[#e4f3fa]" aria-label="Choose your next step">
+          <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+            <div className="text-center"><p className="hm-eyebrow">{tr('Choose your next step','Apna agla qadam chunain')}</p><h2 className="mt-2 font-serif text-3xl text-[#173d60] sm:text-4xl">{tr('Start from what you need right now.','Jo abhi chahiye, wahin se shuru karein.')}</h2></div>
+            <div className="mx-auto mt-7 grid max-w-5xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <button onClick={onStartChat} className="group rounded-2xl bg-[#173d60] p-5 text-left text-white shadow-lg"><MessageCircle className="h-5 w-5" /><h3 className="mt-4 text-sm font-bold">{tr('Talk to Hamnafas','Hamnafas se baat karein')}</h3><p className="mt-1 text-xs leading-5 text-white/75">{tr('Put the thought into words, at your pace.','Apni raftaar se jo dil mein hai likhein.')}</p><span className="mt-4 inline-flex items-center gap-1 text-xs font-bold">{tr('Start talking','Baat shuru karein')} <ArrowRight className="h-3.5 w-3.5" /></span></button>
+              <button onClick={() => onOpenSelfHelp()} className="rounded-2xl border border-[#cbdfeD] bg-white p-5 text-left"><Wind className="h-5 w-5 text-[#2d638f]" /><h3 className="mt-4 text-sm font-bold text-[#173d60]">{tr('Exercises','Exercises')}</h3><p className="mt-1 text-xs leading-5 text-[#607990]">{tr('Breathe, ground or reflect with a short guided tool.','Saans, grounding ya reflection ke liye chhota guided tool.')}</p><span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#2d638f]">{tr('Explore','Dekhein')} <ArrowRight className="h-3.5 w-3.5" /></span></button>
+              <button onClick={() => scrollToSection('entertainment')} className="rounded-2xl border border-[#cbdfeD] bg-white p-5 text-left"><Music2 className="h-5 w-5 text-[#2d638f]" /><h3 className="mt-4 text-sm font-bold text-[#173d60]">{tr('Unwind','Unwind')}</h3><p className="mt-1 text-xs leading-5 text-[#607990]">{tr('Listen to gentle musical patterns for a softer pause.','Naram musical sounds ke saath ek halka pause lein.')}</p><span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#2d638f]">{tr('Listen','Sunein')} <ArrowRight className="h-3.5 w-3.5" /></span></button>
+              <button onClick={onOpenScreening} className="rounded-2xl border border-[#cbdfeD] bg-white p-5 text-left"><ClipboardCheck className="h-5 w-5 text-[#2d638f]" /><h3 className="mt-4 text-sm font-bold text-[#173d60]">{tr('Screen yourself','Apna check karein')}</h3><p className="mt-1 text-xs leading-5 text-[#607990]">{tr('Use PHQ-9 or GAD-7 as a self-screening tool, not a diagnosis.','PHQ-9 ya GAD-7 se self-screening karein — diagnosis nahi.')}</p><span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#2d638f]">{tr('Begin','Shuru karein')} <ArrowRight className="h-3.5 w-3.5" /></span></button>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* Footer subtle note */}
-      <footer className="relative z-10 text-center py-2.5 text-[11px] text-[#627d98]/85 font-normal px-4">
-        Hamnafas is an accessible mental health screening & emotional support companion in Pakistan. High-risk conversations are safely escalated to partner healthcare networks.
-      </footer>
+        <section className="bg-[#eaf6fb]" aria-labelledby="different-heading"><div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16"><div className="max-w-2xl"><p className="hm-eyebrow">{tr('Why Hamnafas','Hamnafas kyun')}</p><h2 id="different-heading" className="mt-3 font-serif text-4xl leading-tight text-[#173d60] sm:text-5xl">{tr('Support that starts with the person, not the form.','Madad jo form se nahi, insaan se shuru hoti hai.')}</h2></div><div className="mt-8 grid gap-4 md:grid-cols-3">{[
+          [MessageCircle,tr('Speak naturally','Apni zubaan mein baat'),tr('English or Roman Urdu, without forcing your thoughts into clinical language.','English ya Roman Urdu — apni baat ko clinical alfaaz mein dhalne ki zaroorat nahi.')],
+          [HeartHandshake,tr('For the moments in between','Darmiyani lamhon ke liye'),tr('Talk, reflect or try one small coping step before you are ready for anything bigger.','Baat karein, reflect karein ya ek chhota coping step try karein.')],
+          [ShieldCheck,tr('Safety-aware','Safety ko samajhne wala'),tr('When risk is serious, Hamnafas points toward human support rather than pretending to replace it.','Jab risk serious ho, Hamnafas insani madad ki taraf rehnumai karta hai.')]
+        ].map(([Icon,title,text]) => <div key={String(title)} className="rounded-2xl border border-[#dce8f2] bg-[#fbfdff] p-6"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#eaf3f9] text-[#2d638f]"><Icon className="h-5 w-5" /></div><h3 className="mt-5 text-sm font-bold text-[#173d60]">{title}</h3><p className="mt-2 text-sm leading-6 text-[#607990]">{text}</p></div>)}</div></div></section>
+
+        <section id="how-it-works" className="bg-[#e8f5fb]"><div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20"><div className="max-w-2xl"><p className="hm-eyebrow">{tr('How it works','Kaise kaam karta hai')}</p><h2 className="mt-3 font-serif text-4xl text-[#173d60] sm:text-5xl">{tr('One calm flow, from check-in to next step.','Ek pur-sukoon flow — check-in se aglay qadam tak.')}</h2></div><div className="mt-9 grid gap-5 md:grid-cols-4">{[
+          ['01',tr('Choose a mood','Mood choose karein'),tr('Your check-in becomes part of your personal progress context.','Aapka mood check-in aapki progress ka context banta hai.')],
+          ['02',tr('Talk your way','Apni zubaan mein baat'),tr('Use English or Roman Urdu and start where you are.','English ya Roman Urdu mein apni baat se shuru karein.')],
+          ['03',tr('Choose support','Madad ka tareeqa chunain'),tr('Talk, exercise, unwind or take a self-screening.','Baat, exercise, unwind ya self-screening mein se chunain.')],
+          ['04',tr('Know when to step out','Kab insani madad leni hai'),tr('Serious risk should lead toward verified human support.','Serious risk par verified insani madad ki taraf rehnumai milti hai.')]
+        ].map(([n,title,text]) => <div key={n} className="rounded-2xl border border-[#dce8f2] bg-white p-6"><span className="text-xs font-bold text-[#5f7488]">{n}</span><h3 className="mt-5 text-sm font-bold text-[#173d60]">{title}</h3><p className="mt-2 text-sm leading-6 text-[#607990]">{text}</p></div>)}</div></div></section>
+
+        <section id="exercises" className="bg-[#eaf6fb]"><div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="hm-eyebrow">{tr('Exercises','Exercises')}</p><h2 className="mt-3 font-serif text-4xl text-[#173d60] sm:text-5xl">{tr('Small actions count.','Chhoti koshishein bhi count karti hain.')}</h2><p className="mt-3 max-w-xl text-sm leading-6 text-[#607990]">{tr('You do not have to solve everything right now. Pick one small guided moment.','Abhi sab kuch solve karna zaroori nahi. Ek chhota guided moment choose karein.')}</p></div><button onClick={() => onOpenSelfHelp()} className="self-start rounded-xl border border-[#cbdce9] bg-white px-4 py-2.5 text-xs font-bold text-[#173d60] sm:self-auto">{tr('See all exercises','Tamam exercises')}</button></div><div className="mt-9 grid gap-4 md:grid-cols-3">{EXERCISES.map(({icon:Icon,titleEn,titleRu,meta,id,textEn,textRu}) => <button key={id} onClick={() => onOpenSelfHelp(id)} className="group rounded-2xl border border-[#dce8f2] bg-[#fbfdff] p-6 text-left hover:border-[#b9d1e2] hover:bg-white"><div className="flex items-center justify-between"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#eaf3f9] text-[#2d638f]"><Icon className="h-5 w-5" /></span><span className="text-[10px] font-bold uppercase tracking-wider text-[#5f7488]">{meta}</span></div><h3 className="mt-6 text-sm font-bold text-[#173d60]">{isRu ? titleRu : titleEn}</h3><p className="mt-2 text-sm leading-6 text-[#607990]">{isRu ? textRu : textEn}</p><span className="mt-5 inline-flex items-center gap-1 text-xs font-bold text-[#2d638f]">{tr('Try it','Try karein')} <ArrowRight className="h-3.5 w-3.5" /></span></button>)}</div></div></section>
+
+        {careItems && careStreak && onToggleCareItem && <section id="streak" className="bg-[#e5f3fa]"><div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:py-16"><div className="text-center"><p className="hm-eyebrow">Silsila · {tr('small things count','chhoti cheezein count karti hain')}</p><h2 className="mt-3 font-serif text-4xl text-[#17476b] sm:text-5xl">{tr('What have you done for yourself today?','Aaj aap ne apne liye kya kiya?')}</h2><p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-[#5c7890]">{tr("A gentle daily ritual for noticing what helps. Missing a day doesn't erase your progress.",'Jo cheez madad karti hai usay notice karne ka halka daily ritual. Ek din miss ho jaye to progress khatam nahi hoti.')}</p></div><div className="mt-9 rounded-3xl border border-[#c9dfed] bg-white p-5 sm:p-7"><CareStreak items={careItems} data={careStreak} onToggleItem={onToggleCareItem} lang={currentLanguage} onOpenProgressReport={onOpenProgressReport} /></div></div></section>}
+
+        <section id="entertainment" className="bg-[#e4f3fa]"><div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:py-16"><div className="text-center"><p className="hm-eyebrow">Unwind</p><h2 className="mt-3 font-serif text-4xl text-[#173d60] sm:text-5xl">{tr('A softer pause, with music.','Music ke saath ek halka sa pause.')}</h2><p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[#607990]">{tr('Choose a gentle musical pattern. These are mood-supportive listening experiences, not a medical treatment or a guaranteed dopamine effect.','Naram musical patterns mein se chunain. Yeh mood-supportive listening experiences hain, medical treatment ya guaranteed dopamine effect nahi.')}</p></div><div className="mx-auto mt-8 grid max-w-4xl grid-cols-2 gap-3 sm:grid-cols-4">{MUSIC.map(({id,icon:Icon,en,ru}) => { const active=activeSound===id; return <button key={id} onClick={() => onToggleSound(id)} className={`rounded-2xl border p-5 text-left transition ${active ? 'border-[#173d60] bg-[#173d60] text-white shadow-lg' : 'border-[#d4e5ef] bg-white text-[#173d60] hover:border-[#a9c5d9]'}`}><Icon className="h-5 w-5"/><h3 className="mt-4 text-sm font-bold">{isRu ? ru : en}</h3><p className={`mt-1 text-[11px] leading-5 ${active ? 'text-white/70' : 'text-[#71889d]'}`}>{active ? tr('Playing now','Abhi chal raha hai') : tr('Play','Chalayen')}</p></button>; })}</div></div></section>
+
+        <footer className="hm-footer" aria-label="Hamnafas footer">
+          <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-12">
+            <div className="grid gap-9 md:grid-cols-[1.6fr_1fr_1fr]">
+              <div className="max-w-md">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-xl font-serif font-bold text-white">ہ</div>
+                  <div>
+                    <p className="font-serif text-2xl font-bold text-white">Hamnafas</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-[.16em] text-white/55">ہم نفس</p>
+                  </div>
+                </div>
+                <p className="mt-4 text-sm leading-6 text-white/70">
+                  {tr(
+                    'A calm, bilingual space for reflection, small coping steps and finding human support when it matters.',
+                    'Soch, chhoti coping steps aur zaroorat par insani madad tak pohanchne ke liye ek pur-sukoon bilingual jagah.'
+                  )}
+                </p>
+                <p className="mt-4 text-xs leading-5 text-white/50">
+                  {tr(
+                    'Hamnafas is an AI companion, not a replacement for professional or emergency care.',
+                    'Hamnafas AI companion hai — professional ya emergency care ka badal nahi.'
+                  )}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[.16em] text-white/50">{tr('Explore','Explore')}</p>
+                <nav className="mt-4 flex flex-col items-start gap-2.5 text-sm">
+                  <button onClick={() => scrollToSection('home')} className="text-white/75 transition hover:text-white">{tr('Home','Home')}</button>
+                  <button onClick={() => scrollToSection('how-it-works')} className="text-white/75 transition hover:text-white">{tr('How it works','Kaise kaam karta hai')}</button>
+                  <button onClick={() => scrollToSection('exercises')} className="text-white/75 transition hover:text-white">{tr('Exercises','Exercises')}</button>
+                  <button onClick={() => scrollToSection('streak')} className="text-white/75 transition hover:text-white">{tr('Daily care','Rozana care')}</button>
+                  <button onClick={() => scrollToSection('entertainment')} className="text-white/75 transition hover:text-white">{tr('Unwind','Unwind')}</button>
+                </nav>
+              </div>
+
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[.16em] text-white/50">{tr('Safety','Safety')}</p>
+                <div className="mt-4 space-y-3">
+                  <button onClick={onOpenCrisis} className="flex items-start gap-2 text-left text-sm text-white/75 transition hover:text-white">
+                    <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" />
+                    <span>{tr('Support & crisis resources','Madad aur crisis resources')}</span>
+                  </button>
+                  <p className="text-xs leading-5 text-white/50">
+                    {tr('For urgent or serious concerns, use verified human support rather than relying on AI alone.','Urgent ya serious concern mein verified insani madad ko AI ke bajaye tarjeeh dein.')}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-9 flex flex-col gap-3 border-t border-white/10 pt-5 text-[11px] text-white/45 sm:flex-row sm:items-center sm:justify-between">
+              <p>© 2026 Hamnafas. {tr('All rights reserved.','Tamam huqooq mehfooz hain.')}</p>
+              <p>{tr('Built with care in Pakistan · Est. 2026','Pakistan mein care ke saath tayyar kiya gaya · Est. 2026')}</p>
+            </div>
+          </div>
+        </footer>
+      </main>
     </div>
   );
 };

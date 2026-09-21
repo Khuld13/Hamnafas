@@ -125,18 +125,18 @@ export const MoodFace: React.FC<MoodFaceProps> = ({ mood, className = '', size =
         >
           <svg viewBox="0 0 36 36" width={size * 0.75} height={size * 0.75} fill="none">
             {/* Stressed eyes > < */}
-            <path d="M10 13L14 15.5L10 18" stroke="#521c0e" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M26 13L22 15.5L26 18" stroke="#521c0e" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M10 13L14 15.5L10 18" stroke="#173d60" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M26 13L22 15.5L26 18" stroke="#173d60" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
             {/* Stressed curved open mouth */}
             <path
               d="M13 23C15 20.5 21 20.5 23 23"
-              stroke="#521c0e"
+              stroke="#173d60"
               strokeWidth="2.4"
               strokeLinecap="round"
             />
             <path
               d="M14 23.2C15.5 25.5 20.5 25.5 22 23.2"
-              stroke="#521c0e"
+              stroke="#173d60"
               strokeWidth="1.8"
               strokeLinecap="round"
             />

@@ -123,19 +123,19 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
   const directionBadge = data ? getDirectionBadge(data.moodTrend.direction) : null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#243b53]/40 backdrop-blur-sm animate-fade-in print:p-0 print:bg-white print:static">
-      <div className="relative w-full max-w-2xl bg-[#fbfdf9] rounded-3xl border border-[#dbe8d6] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] print:max-h-none print:shadow-none print:border-none print:rounded-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#173d60]/40 backdrop-blur-sm animate-fade-in print:p-0 print:bg-white print:static">
+      <div className="relative w-full max-w-2xl bg-[#fbfdf9] rounded-3xl border border-[#c9dfed] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] print:max-h-none print:shadow-none print:border-none print:rounded-none">
         {/* Header */}
-        <div className="px-6 py-4 bg-[#eef3ea] border-b border-[#dbe8d6] flex items-center justify-between print:bg-white print:border-b-2">
-          <div className="flex items-center gap-2.5 text-[#2f3e2a]">
-            <div className="p-2 rounded-xl bg-[#dbe8d6] text-[#4c6b43] print:hidden">
+        <div className="px-6 py-4 bg-[#e6f3fa] border-b border-[#c9dfed] flex items-center justify-between print:bg-white print:border-b-2">
+          <div className="flex items-center gap-2.5 text-[#244f77]">
+            <div className="p-2 rounded-xl bg-[#c9dfed] text-[#2b6f9f] print:hidden">
               <FileText className="w-5 h-5" />
             </div>
             <div>
               <h3 className="text-base sm:text-lg font-bold">
                 {isRu ? 'Hamnafas Progress & Observational Report' : 'Hamnafas Progress & Observational Summary'}
               </h3>
-              <p className="text-xs text-[#5b6b55]">
+              <p className="text-xs text-[#5d7890]">
                 {isRu
                   ? 'Pichle 10 dinon ka khulasa — doctor ya therapist ke sath share karne ke liye'
                   : '10-day summary to share with your healthcare provider or supporting adult'}
@@ -146,7 +146,7 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
           <div className="flex items-center gap-2 print:hidden">
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#4c6b43] hover:bg-[#3c5535] text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#2b6f9f] hover:bg-[#245b80] text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
               title="Save or Print Report"
             >
               <Printer className="w-3.5 h-3.5" />
@@ -154,7 +154,7 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-[#4c6b43] hover:text-[#2f3e2a] hover:bg-[#dbe8d6] transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg text-[#2b6f9f] hover:text-[#244f77] hover:bg-[#c9dfed] transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -164,8 +164,8 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
         {/* Content */}
         <div className="p-6 overflow-y-auto space-y-5 print:overflow-visible print:p-4 text-xs sm:text-sm">
           {isLoading && (
-            <div className="py-12 text-center text-[#5b6b55] space-y-2">
-              <div className="w-6 h-6 border-2 border-[#4c6b43] border-t-transparent rounded-full animate-spin mx-auto" />
+            <div className="py-12 text-center text-[#5d7890] space-y-2">
+              <div className="w-6 h-6 border-2 border-[#2b6f9f] border-t-transparent rounded-full animate-spin mx-auto" />
               <p>{isRu ? 'Aapki report tayyar ho rahi hai...' : 'Generating your progress summary...'}</p>
             </div>
           )}
@@ -181,52 +181,52 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
             <>
               {/* Top Metrics Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                <div className="p-3.5 rounded-2xl bg-white border border-[#dbe8d6] shadow-xs">
-                  <div className="flex items-center gap-1.5 text-[#5b6b55] text-xs font-medium mb-1">
-                    <Calendar className="w-3.5 h-3.5 text-[#4c6b43]" />
+                <div className="p-3.5 rounded-2xl bg-white border border-[#c9dfed] shadow-xs">
+                  <div className="flex items-center gap-1.5 text-[#5d7890] text-xs font-medium mb-1">
+                    <Calendar className="w-3.5 h-3.5 text-[#2b6f9f]" />
                     <span>{isRu ? 'Muddat' : 'Period'}</span>
                   </div>
-                  <p className="text-base sm:text-lg font-bold text-[#2f3e2a]">
+                  <p className="text-base sm:text-lg font-bold text-[#244f77]">
                     {data.periodDays} {isRu ? 'Din' : 'Days'}
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-white border border-[#dbe8d6] shadow-xs">
-                  <div className="flex items-center gap-1.5 text-[#5b6b55] text-xs font-medium mb-1">
-                    <Flame className="w-3.5 h-3.5 text-[#b8703a]" />
+                <div className="p-3.5 rounded-2xl bg-white border border-[#c9dfed] shadow-xs">
+                  <div className="flex items-center gap-1.5 text-[#5d7890] text-xs font-medium mb-1">
+                    <Flame className="w-3.5 h-3.5 text-[#2b6f9f]" />
                     <span>{isRu ? 'Silsila (Streak)' : 'Care Streak'}</span>
                   </div>
-                  <p className="text-base sm:text-lg font-bold text-[#b8703a]">
+                  <p className="text-base sm:text-lg font-bold text-[#2b6f9f]">
                     {data.streakCount} {isRu ? 'din' : 'days'}
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-white border border-[#dbe8d6] shadow-xs">
-                  <div className="flex items-center gap-1.5 text-[#5b6b55] text-xs font-medium mb-1">
-                    <TrendingUp className="w-3.5 h-3.5 text-[#4c6b43]" />
+                <div className="p-3.5 rounded-2xl bg-white border border-[#c9dfed] shadow-xs">
+                  <div className="flex items-center gap-1.5 text-[#5d7890] text-xs font-medium mb-1">
+                    <TrendingUp className="w-3.5 h-3.5 text-[#2b6f9f]" />
                     <span>{isRu ? 'Check-ins' : 'Check-ins'}</span>
                   </div>
-                  <p className="text-base sm:text-lg font-bold text-[#2f3e2a]">
+                  <p className="text-base sm:text-lg font-bold text-[#244f77]">
                     {data.moodTrend.totalCheckIns}
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-white border border-[#dbe8d6] shadow-xs">
-                  <div className="flex items-center gap-1.5 text-[#5b6b55] text-xs font-medium mb-1">
+                <div className="p-3.5 rounded-2xl bg-white border border-[#c9dfed] shadow-xs">
+                  <div className="flex items-center gap-1.5 text-[#5d7890] text-xs font-medium mb-1">
                     <ClipboardCheck className="w-3.5 h-3.5 text-[#2b5984]" />
                     <span>{isRu ? 'Screenings' : 'Screenings'}</span>
                   </div>
-                  <p className="text-base sm:text-lg font-bold text-[#2f3e2a]">
+                  <p className="text-base sm:text-lg font-bold text-[#244f77]">
                     {data.screeningHistory.length}
                   </p>
                 </div>
               </div>
 
               {/* AI Observational Summary Card */}
-              <div className="p-4.5 rounded-2xl bg-[#f2f7ef] border border-[#cfe0c8] space-y-2.5 shadow-xs">
+              <div className="p-4.5 rounded-2xl bg-[#e9f5fb] border border-[#b9d8ea] space-y-2.5 shadow-xs">
                 <div className="flex items-center justify-between flex-wrap gap-2">
-                  <div className="flex items-center gap-2 text-[#2f3e2a] font-bold">
-                    <Sparkles className="w-4 h-4 text-[#4c6b43]" />
+                  <div className="flex items-center gap-2 text-[#244f77] font-bold">
+                    <Sparkles className="w-4 h-4 text-[#2b6f9f]" />
                     <span>{isRu ? 'Observational Khulasa' : 'Observational Summary'}</span>
                   </div>
                   {directionBadge && (
@@ -235,10 +235,10 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
                     </span>
                   )}
                 </div>
-                <p className="text-xs sm:text-sm text-[#3c4a37] leading-relaxed whitespace-pre-line">
+                <p className="text-xs sm:text-sm text-[#49657f] leading-relaxed whitespace-pre-line">
                   {data.aiSummary}
                 </p>
-                <div className="pt-1.5 border-t border-[#dbe8d6] text-[11px] text-[#6f7d68] italic">
+                <div className="pt-1.5 border-t border-[#c9dfed] text-[11px] text-[#5d7890] italic">
                   {isRu
                     ? '⚠️ Zaroori wazahat: Yeh summary kisi tibbi tashkhees (diagnosis) ya ilaj ki nishan-dahi nahi karti, balki doctor ya family member ke sath mufeed guftagu ke liye tayyar ki gayi hai.'
                     : '⚠️ Clinical notice: This summary is an observational engagement tracker to assist discussions with your clinician or therapist. It is not a diagnostic evaluation.'}
@@ -248,17 +248,17 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
               {/* Mood History Timeline */}
               {data.moodTrend.history && data.moodTrend.history.length > 0 && (
                 <div className="space-y-2">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-[#4c6b43]">
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-[#2b6f9f]">
                     {isRu ? 'Recent Mood Log' : 'Recent Mood Log'}
                   </h4>
                   <div className="flex flex-wrap gap-1.5">
                     {data.moodTrend.history.map((m, idx) => (
                       <span
                         key={idx}
-                        className="px-2.5 py-1 rounded-xl bg-white border border-[#dbe8d6] text-xs text-[#2f3e2a] inline-flex items-center gap-1.5 shadow-xs"
+                        className="px-2.5 py-1 rounded-xl bg-white border border-[#c9dfed] text-xs text-[#244f77] inline-flex items-center gap-1.5 shadow-xs"
                       >
                         <span className="font-semibold">{m.mood}</span>
-                        <span className="text-[10px] text-[#829ab1]">
+                        <span className="text-[10px] text-[#5f7488]">
                           {new Date(m.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                         </span>
                       </span>
@@ -269,11 +269,11 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
 
               {/* Screening History */}
               <div className="space-y-2">
-                <h4 className="font-bold text-xs uppercase tracking-wider text-[#4c6b43]">
+                <h4 className="font-bold text-xs uppercase tracking-wider text-[#2b6f9f]">
                   {isRu ? 'Clinical Screening History (PHQ-9 / GAD-7)' : 'Clinical Screening History (PHQ-9 / GAD-7)'}
                 </h4>
                 {data.screeningHistory.length === 0 ? (
-                  <p className="text-xs text-[#6f7d68] italic bg-white p-3 rounded-xl border border-[#dbe8d6]">
+                  <p className="text-xs text-[#5d7890] italic bg-white p-3 rounded-xl border border-[#c9dfed]">
                     {isRu
                       ? 'Is muddat mein koi clinical screening nahi li gayi.'
                       : 'No PHQ-9 or GAD-7 screenings completed within this 10-day period.'}
@@ -283,11 +283,11 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
                     {data.screeningHistory.map((item) => (
                       <div
                         key={item.id}
-                        className="p-3 rounded-xl bg-white border border-[#dbe8d6] flex items-center justify-between gap-3 shadow-xs"
+                        className="p-3 rounded-xl bg-white border border-[#c9dfed] flex items-center justify-between gap-3 shadow-xs"
                       >
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-xs uppercase text-[#102a43]">
+                            <span className="font-bold text-xs uppercase text-[#173d60]">
                               {item.type.toUpperCase()}
                             </span>
                             <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#f4f8fc] border border-[#e2ecf5] text-[#1e3a5f] font-semibold">
@@ -297,7 +297,7 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
                               {item.severityLevel}
                             </span>
                           </div>
-                          <span className="text-[10px] text-[#829ab1] mt-0.5 block">
+                          <span className="text-[10px] text-[#5f7488] mt-0.5 block">
                             {new Date(item.createdAt).toLocaleDateString(undefined, {
                               year: 'numeric',
                               month: 'short',
@@ -322,7 +322,7 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
           )}
 
           {/* Footer note */}
-          <div className="p-3 bg-[#eef3ea] rounded-xl text-center text-xs text-[#5b6b55] print:mt-4">
+          <div className="p-3 bg-[#e6f3fa] rounded-xl text-center text-xs text-[#5d7890] print:mt-4">
             <span>Hamnafas — Empathetic Mental Health Support in Pakistan. </span>
             <span className="font-semibold">www.hamnafas.pk</span>
           </div>

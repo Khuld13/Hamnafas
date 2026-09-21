@@ -240,14 +240,14 @@ export const ChatView: React.FC<ChatViewProps> = ({
   };
 
   return (
-    <div className="relative flex-1 flex flex-col h-full bg-[#edf4fb] overflow-hidden">
+    <div className="relative flex-1 flex flex-col h-full bg-[#e3f2fa] overflow-hidden">
       {/* Top Header Bar */}
-      <header className="px-4 sm:px-5 py-3 bg-white/90 backdrop-blur-md border-b border-[#d8e7f5] flex items-center justify-between z-20 shadow-xs">
+      <header className="px-4 sm:px-6 py-3.5 bg-white border-b border-[#dce8f2] flex items-center justify-between z-20 shadow-[0_2px_14px_rgba(23,61,96,.05)]">
         <div className="flex items-center gap-2.5 sm:gap-3">
           {!sidebarOpen && (
             <button
               onClick={onToggleSidebar}
-              className="p-1.5 text-[#334e68] hover:text-[#102a43] hover:bg-[#e4eff9] rounded-lg transition-colors cursor-pointer"
+              className="flex h-10 w-10 items-center justify-center text-[#49657f] hover:text-[#173d60] hover:bg-[#f1f6fa] rounded-lg transition-colors cursor-pointer"
               title="Open sidebar"
             >
               <PanelLeftOpen className="w-5 h-5" />
@@ -257,7 +257,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
           <button
             id="chat-back-home-btn"
             onClick={onBackToHome}
-            className="flex items-center gap-1.5 text-xs font-medium text-[#486581] hover:text-[#102a43] hover:bg-[#e4eff9] px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold text-[#49657f] hover:bg-[#f1f6fa] hover:text-[#173d60]"
             title="Back to Home"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -268,23 +268,23 @@ export const ChatView: React.FC<ChatViewProps> = ({
 
           {/* Active Conversation Title & Mood indicator */}
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-[#1e3a5f] text-white flex items-center justify-center text-xs font-serif italic shadow-xs">
+            <div className="w-9 h-9 rounded-xl bg-[#dcebf8] text-[#173d60] flex items-center justify-center text-xs font-bold">
               H
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-semibold text-[#102a43] leading-none">
+                <h3 className="text-sm font-bold text-[#173d60] leading-none">
                   Hamnafas
                 </h3>
                 {conversation.mood && (
-                  <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full bg-[#e2eef9] text-[#244f77]">
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-lg bg-[#eef5fa] text-[#2d638f]">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#4a7298]" />
                     {conversation.mood}
                   </span>
                 )}
               </div>
               <p className="text-[11px] text-[#627d98] leading-tight hidden sm:block">
-                Open-Access Mental Health AI in Pakistan
+                Your private space to talk things through
               </p>
             </div>
           </div>
@@ -294,7 +294,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={onOpenScreening}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#dcebf8] hover:bg-[#cee3f6] text-[#1e3a5f] text-xs font-medium transition-all cursor-pointer shadow-xs"
+            className="flex h-10 items-center gap-1.5 rounded-lg border border-[#dce8f2] bg-white px-3 text-xs font-bold text-[#49657f] hover:bg-[#f5f9fc]"
             title="Take PHQ-9 or GAD-7 screening"
           >
             <ClipboardCheck className="w-3.5 h-3.5" />
@@ -303,7 +303,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
 
           <button
             onClick={onOpenCrisis}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 text-xs font-semibold transition-all cursor-pointer"
+            className="flex h-10 items-center gap-1.5 rounded-lg border border-[#eadada] bg-[#fffafa] px-3 text-xs font-bold text-[#805555] hover:bg-[#edf5fc]"
             title="Helplines"
           >
             <ShieldAlert className="w-3.5 h-3.5 text-rose-600" />
@@ -315,8 +315,8 @@ export const ChatView: React.FC<ChatViewProps> = ({
             onClick={onOpenAuth}
             className={
               authUser
-                ? "w-8 h-8 rounded-full bg-[#1e3a5f] hover:bg-[#102a43] text-white font-bold flex items-center justify-center text-xs transition-all cursor-pointer shadow-xs ring-2 ring-white/60"
-                : "flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#1e3a5f] hover:bg-[#102a43] text-white text-xs font-semibold transition-all cursor-pointer shadow-xs"
+                ? "w-8 h-8 rounded-full bg-[#1e3a5f] hover:bg-[#173d60] text-white font-bold flex items-center justify-center text-xs transition-all cursor-pointer shadow-xs ring-2 ring-white/60"
+                : "flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#173d60] hover:bg-[#102f4b] text-white text-xs font-bold transition-all cursor-pointer"
             }
             title={authUser ? authUser.email : 'Sign in to save your history'}
             aria-label={authUser ? `Account for ${authUser.email}` : 'Sign In'}
@@ -334,11 +334,11 @@ export const ChatView: React.FC<ChatViewProps> = ({
       </header>
 
       {/* Messages Scrollable Container */}
-      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 space-y-5 max-w-3xl w-full mx-auto">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-8 space-y-6 max-w-3xl w-full mx-auto">
         {/* Mood Context Pill if present */}
         {activeMoodOption && (
           <div className="flex items-center justify-center mb-2">
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white/80 backdrop-blur-xs border border-[#d6e7f7] shadow-xs text-xs text-[#334e68]">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white border border-[#dce8f2] text-xs text-[#49657f]">
               <MoodFace mood={activeMoodOption.id} size={24} />
               <span>
                 Check-in feeling <strong>{activeMoodOption.label}</strong> ({activeMoodOption.labelRomanUrdu}). Hamnafas is with you.
@@ -356,21 +356,21 @@ export const ChatView: React.FC<ChatViewProps> = ({
               className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} space-y-1.5`}
             >
               <div
-                className={`group relative max-w-[88%] sm:max-w-[80%] px-4 py-3.5 rounded-2xl text-sm leading-relaxed shadow-xs ${
+                className={`group relative max-w-[88%] sm:max-w-[78%] px-4 py-3.5 rounded-2xl text-sm leading-6 ${
                   isUser
-                    ? 'bg-[#1e3a5f] text-white rounded-br-xs'
+                    ? 'bg-[#173d60] text-white rounded-br-sm'
                     : message.riskTier === 'high'
                     ? 'bg-rose-50/90 text-rose-950 border border-rose-300 rounded-bl-xs'
                     : message.riskTier === 'moderate'
-                    ? 'bg-[#eef3ea]/90 text-[#2f3e2a] border border-[#cfe0c8] rounded-bl-xs'
-                    : 'bg-white text-[#102a43] border border-[#d6e7f7] rounded-bl-xs'
+                    ? 'bg-[#e6f3fa]/90 text-[#244f77] border border-[#b9d8ea] rounded-bl-xs'
+                    : 'bg-white text-[#173d60] border border-[#c9dfed] rounded-bl-sm shadow-[0_8px_26px_rgba(33,72,105,.05)]'
                 }`}
               >
                 {/* Assistant Markdown Content */}
                 {isUser ? (
                   <p className="whitespace-pre-wrap">{message.content}</p>
                 ) : (
-                  <div className="markdown-body space-y-2 prose prose-sm text-[#102a43]">
+                  <div className="markdown-body space-y-2 prose prose-sm text-[#173d60]">
                     <ReactMarkdown>{message.content}</ReactMarkdown>
                   </div>
                 )}
@@ -402,10 +402,10 @@ export const ChatView: React.FC<ChatViewProps> = ({
 
                 {/* MODERATE tier: calm nudge toward the local support directory — no hotline/ambulance framing */}
                 {!isUser && message.riskTier === 'moderate' && (
-                  <div className="mt-3 pt-2.5 border-t border-[#cfe0c8] flex flex-wrap gap-2 items-center">
+                  <div className="mt-3 pt-2.5 border-t border-[#b9d8ea] flex flex-wrap gap-2 items-center">
                     <button
                       onClick={onOpenLocalSupport}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#4c6b43] hover:bg-[#3c5535] text-white text-xs font-semibold shadow-xs cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#2b6f9f] hover:bg-[#245b80] text-white text-xs font-semibold shadow-xs cursor-pointer"
                     >
                       <HeartHandshake className="w-3.5 h-3.5" />
                       <span>{currentLanguage === 'roman_urdu' ? 'Madad Dikhayein' : 'Find Support Near You'}</span>
@@ -415,10 +415,10 @@ export const ChatView: React.FC<ChatViewProps> = ({
 
                 {/* Assistant Message Quick Actions (TTS & Copy) */}
                 {!isUser && (
-                  <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[#f0f4f8] text-[#829ab1]">
+                  <div className="flex items-center gap-2 mt-3 pt-2 border-t border-[#e9f0f5] text-[#5f7488]">
                     <button
                       onClick={() => handleToggleSpeak(message.id, message.content)}
-                      className={`p-1 rounded hover:bg-[#f0f4f8] hover:text-[#102a43] transition-colors cursor-pointer ${
+                      className={`p-1 rounded hover:bg-[#f0f4f8] hover:text-[#173d60] transition-colors cursor-pointer ${
                         activeSpeechId === message.id ? 'text-[#1e3a5f] bg-[#e4effa]' : ''
                       }`}
                       title={activeSpeechId === message.id ? 'Stop reading' : 'Listen with calming voice'}
@@ -431,7 +431,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
                     </button>
                     <button
                       onClick={() => handleCopy(message.id, message.content)}
-                      className="p-1 rounded hover:bg-[#f0f4f8] hover:text-[#102a43] transition-colors cursor-pointer"
+                      className="p-1 rounded hover:bg-[#f0f4f8] hover:text-[#173d60] transition-colors cursor-pointer"
                       title="Copy message"
                     >
                       {copiedId === message.id ? (
@@ -445,7 +445,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
               </div>
 
               {/* Timestamp */}
-              <span className="text-[11px] text-[#829ab1] px-1">
+              <span className="text-[11px] text-[#5f7488] px-1">
                 {message.timestamp}
               </span>
 
@@ -456,7 +456,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
                     <button
                       key={idx}
                       onClick={() => (isLocalSupportPrompt(prompt) ? onOpenLocalSupport() : handleSendMessage(prompt))}
-                      className="px-3 py-1 text-xs bg-white/85 hover:bg-white text-[#244f77] hover:text-[#102a43] border border-[#cbdbe8] rounded-full transition-all shadow-xs hover:shadow-sm cursor-pointer hover:border-[#96bede]"
+                      className="px-3 py-2 text-xs bg-[#f8fbfd] hover:bg-white text-[#2d638f] hover:text-[#173d60] border border-[#dce8f2] rounded-lg transition-all cursor-pointer hover:border-[#b9d1e2]"
                     >
                       {prompt} →
                     </button>
@@ -482,34 +482,34 @@ export const ChatView: React.FC<ChatViewProps> = ({
       </div>
 
       {/* Chat Input Dock */}
-      <footer className="p-3.5 sm:p-4 bg-white/90 backdrop-blur-md border-t border-[#d8e7f5] z-20">
+      <footer className="p-4 sm:p-5 bg-white/95 border-t border-[#dce8f2] z-20 shadow-[0_-4px_18px_rgba(23,61,96,.04)]">
         <div className="max-w-3xl mx-auto space-y-2">
           {/* Quick Wellbeing Action Buttons */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
             <button
               onClick={() => onOpenScreening()}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#e3effa] hover:bg-[#d4e6f6] text-[#1e3a5f] border border-[#cbdbe8] transition-colors whitespace-nowrap cursor-pointer font-medium"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white/80 hover:bg-white text-[#49657f] border border-[#c9dfed] transition-colors whitespace-nowrap cursor-pointer font-bold"
             >
               <ClipboardCheck className="w-3 h-3 text-[#3b668f]" />
               <span>Take PHQ-9 / GAD-7 Test</span>
             </button>
             <button
               onClick={() => handleSendMessage("Let's do a 1-minute calming box breath.")}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#edf5fc] hover:bg-[#dcebf8] text-[#244f77] border border-[#d2e4f3] transition-colors whitespace-nowrap cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white/80 hover:bg-white text-[#49657f] border border-[#c9dfed] transition-colors whitespace-nowrap cursor-pointer font-bold"
             >
               <Wind className="w-3 h-3 text-[#4a7298]" />
               <span>Guide my breath</span>
             </button>
             <button
               onClick={() => handleSendMessage("I want to try the 5-4-3-2-1 grounding technique.")}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#edf5fc] hover:bg-[#dcebf8] text-[#244f77] border border-[#d2e4f3] transition-colors whitespace-nowrap cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white/80 hover:bg-white text-[#49657f] border border-[#c9dfed] transition-colors whitespace-nowrap cursor-pointer font-bold"
             >
               <Compass className="w-3 h-3 text-[#4a7298]" />
               <span>Grounding 5-4-3-2-1</span>
             </button>
             <button
               onClick={() => handleSendMessage("Dil par bojh hai, bas aaram se suniye.")}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#edf5fc] hover:bg-[#dcebf8] text-[#244f77] border border-[#d2e4f3] transition-colors whitespace-nowrap cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white/80 hover:bg-white text-[#49657f] border border-[#c9dfed] transition-colors whitespace-nowrap cursor-pointer font-bold"
             >
               <HeartHandshake className="w-3 h-3 text-[#4a7298]" />
               <span>Dil ki baat (Just listen)</span>
@@ -522,7 +522,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
               e.preventDefault();
               handleSendMessage();
             }}
-            className="relative flex items-center bg-[#f4f8fc] border border-[#cde0f0] rounded-2xl p-1.5 focus-within:border-[#7ba8c9] focus-within:ring-2 focus-within:ring-[#7ba8c9]/20 transition-all shadow-xs"
+            className="relative flex items-center bg-white border border-[#cbdce9] rounded-xl p-1.5 focus-within:border-[#7ba8c9] focus-within:ring-2 focus-within:ring-[#7ba8c9]/20 transition-all shadow-[0_8px_25px_rgba(33,72,105,.06)]"
           >
             <input
               ref={inputRef}
@@ -537,7 +537,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
               }
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              className="flex-1 bg-transparent px-3.5 py-2 text-sm text-[#102a43] placeholder:text-[#829ab1] focus:outline-none"
+              className="flex-1 bg-transparent px-3.5 py-2.5 text-sm text-[#173d60] placeholder:text-[#5f7488] focus:outline-none"
             />
 
             {/* Speech to text mic button */}
@@ -548,7 +548,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
               className={`p-2 rounded-xl transition-colors cursor-pointer ${
                 isListening
                   ? 'bg-rose-500 text-white animate-pulse'
-                  : 'text-[#627d98] hover:text-[#102a43] hover:bg-white/80'
+                  : 'text-[#627d98] hover:text-[#173d60] hover:bg-white/80'
               }`}
               title={isListening ? "Listening... Click to stop" : "Speak your message"}
             >
@@ -560,9 +560,9 @@ export const ChatView: React.FC<ChatViewProps> = ({
               type="submit"
               id="chat-send-btn"
               disabled={!inputText.trim() || isTyping}
-              className={`p-2 rounded-xl transition-all duration-150 cursor-pointer ml-1 ${
+              className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-150 cursor-pointer ml-1 ${
                 inputText.trim() && !isTyping
-                  ? 'bg-[#1e3a5f] text-white hover:bg-[#102a43] shadow-xs active:scale-95'
+                  ? 'bg-[#173d60] text-white hover:bg-[#102f4b] shadow-xs active:scale-95'
                   : 'bg-transparent text-[#b0c4de] cursor-not-allowed'
               }`}
               title="Send message"

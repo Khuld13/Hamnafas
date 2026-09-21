@@ -1,20 +1,6 @@
 import React, { useState } from 'react';
-import { 
-  SquarePen, 
-  Search, 
-  Clock, 
-  Settings, 
-  Heart, 
-  PanelLeftClose, 
-  Trash2,
-  ClipboardCheck,
-  ShieldAlert,
-  Sparkles,
-  LogIn,
-  FileText
-} from 'lucide-react';
+import { SquarePen, Search, Clock3, Settings, HeartHandshake, PanelLeftClose, Trash2, ClipboardCheck, ShieldCheck, LogIn, FileText, Sparkles } from 'lucide-react';
 import { Conversation, UserProfile } from '../types';
-import pottedPlantImg from '../assets/images/potted_plant_icon_1788081031250.jpg';
 
 interface SidebarProps {
   conversations: Conversation[];
@@ -35,248 +21,56 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
-  conversations,
-  activeConversationId,
-  userProfile,
-  isOpen,
-  onToggleSidebar,
-  onSelectConversation,
-  onNewConversation,
-  onDeleteConversation,
-  onOpenSettings,
-  onOpenSelfHelp,
-  onOpenScreening,
-  onOpenCrisis,
-  authUser,
-  onOpenAuth,
-  onOpenProgressReport,
+  conversations, activeConversationId, userProfile, isOpen, onToggleSidebar, onSelectConversation,
+  onNewConversation, onDeleteConversation, onOpenSettings, onOpenSelfHelp, onOpenScreening,
+  onOpenCrisis, authUser, onOpenAuth, onOpenProgressReport,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [heartLiked, setHeartLiked] = useState(false);
-
-  const filteredConversations = conversations.filter((c) =>
-    c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    c.messages.some((m) => m.content.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  const filteredConversations = conversations.filter((c) => c.title.toLowerCase().includes(searchQuery.toLowerCase()) || c.messages.some((m) => m.content.toLowerCase().includes(searchQuery.toLowerCase())));
 
   return (
     <>
-      {/* Mobile Backdrop */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-[#0f2438]/25 backdrop-blur-xs z-30 lg:hidden"
-          onClick={onToggleSidebar}
-        />
-      )}
-
-      {/* Main Sidebar Container */}
-      <aside
-        className={`fixed lg:static top-0 left-0 bottom-0 z-40 h-full w-[280px] sm:w-[300px] bg-[#f8fbfe]/95 lg:bg-[#f8fbfe] border-r border-[#d4e4f2] flex flex-col justify-between p-4 sm:p-5 transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        } ${!isOpen ? 'lg:hidden' : ''}`}
-      >
-        {/* Top Section: Brand & Action Controls */}
-        <div className="flex flex-col space-y-3 sm:space-y-3.5">
-          {/* Logo & Collapse Header */}
-          <div className="flex items-center justify-between pt-1">
-            <div 
-              onClick={onNewConversation}
-              className="flex items-center gap-2.5 cursor-pointer group"
-            >
-              {/* Heart in Chat Icon */}
-              <div className="w-8 h-8 rounded-xl bg-[#e2eef8] text-[#1e3a5f] flex items-center justify-center transition-transform group-hover:scale-105 shadow-xs">
-                <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-                  <path d="M12 8.5c-.8-1.2-2.5-1.1-3.2 0-.6 1-.1 2.2 1.2 3.2l2 1.8 2-1.8c1.3-1 1.8-2.2 1.2-3.2-.7-1.1-2.4-1.2-3.2 0z" fill="currentColor" stroke="none" />
-                </svg>
-              </div>
-              <div>
-                <span className="text-2xl font-serif italic text-[#1e3a5f] tracking-tight font-medium block leading-none">
-                  Hamnafas
-                </span>
-                <span className="text-[10px] text-[#627d98] font-sans tracking-wide">
-                  Mental Health AI
-                </span>
-              </div>
-            </div>
-
-            {/* Sidebar toggle button */}
-            <button
-              id="sidebar-toggle-btn"
-              onClick={onToggleSidebar}
-              className="p-1.5 text-[#627d98] hover:text-[#102a43] hover:bg-[#e4eff9] rounded-lg transition-colors cursor-pointer"
-              title="Toggle sidebar"
-            >
-              <PanelLeftClose className="w-5 h-5 stroke-[1.6]" />
+      {isOpen && <div className="fixed inset-0 z-30 bg-[#173d60]/20 backdrop-blur-sm lg:hidden" onClick={onToggleSidebar} aria-hidden="true" />}
+      <aside className={`fixed inset-y-0 left-0 z-40 flex w-[286px] flex-col border-r border-[#c9dfed] bg-white transition-transform duration-300 lg:static lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full lg:hidden'}`}>
+        <div className="flex min-h-0 flex-1 flex-col px-4 py-5">
+          <div className="flex items-center justify-between">
+            <button onClick={onNewConversation} className="flex items-center gap-2.5 text-left" aria-label="Open Hamnafas and start a new conversation">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#dcebf8] text-[#173d60]"><HeartHandshake className="h-5 w-5" /></span>
+              <span><span className="block font-serif text-[1.5rem] leading-none text-[#173d60]">Hamnafas</span><span className="mt-1 block text-[9px] font-bold uppercase tracking-[.13em] text-[#8197aa]">Your private space</span></span>
             </button>
+            <button onClick={onToggleSidebar} className="flex h-9 w-9 items-center justify-center rounded-lg text-[#5f7488] hover:bg-white hover:text-[#173d60]" title="Close menu"><PanelLeftClose className="h-5 w-5" /></button>
           </div>
 
-          {/* New Conversation Button */}
-          <button
-            id="new-conversation-btn"
-            onClick={onNewConversation}
-            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl bg-[#dcebf8] text-[#1e3a5f] hover:bg-[#cee3f6] active:scale-[0.98] transition-all duration-150 font-medium text-sm shadow-xs cursor-pointer"
-          >
-            <SquarePen className="w-4 h-4 stroke-[2]" />
-            <span>New Conversation</span>
-          </button>
+          <button id="new-conversation-btn" onClick={onNewConversation} className="mt-6 flex h-11 items-center justify-center gap-2 rounded-xl bg-[#173d60] text-sm font-bold text-white hover:bg-[#102f4b]"><SquarePen className="h-4 w-4" /> New conversation</button>
 
-          {/* Screening & Crisis Shortcuts */}
-          <div className="grid grid-cols-2 gap-1.5">
-            <button
-              onClick={onOpenScreening}
-              className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-white hover:bg-[#eaf2f9] text-[#1e3a5f] border border-[#d6e7f7] text-xs font-medium transition-colors cursor-pointer shadow-xs"
-              title="Take PHQ-9 or GAD-7 clinical assessment"
-            >
-              <ClipboardCheck className="w-3.5 h-3.5 text-[#3b668f] shrink-0" />
-              <span className="truncate">Screening</span>
-            </button>
-
-            <button
-              onClick={onOpenCrisis}
-              className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-rose-50/80 hover:bg-rose-100 text-rose-800 border border-rose-200 text-xs font-semibold transition-colors cursor-pointer"
-              title="Pakistan Emergency Helplines"
-            >
-              <ShieldAlert className="w-3.5 h-3.5 text-rose-600 shrink-0" />
-              <span className="truncate">Helplines</span>
-            </button>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            <button onClick={onOpenScreening} className="flex h-10 items-center justify-center gap-1.5 rounded-lg border border-[#dce8f2] bg-white text-xs font-bold text-[#49657f] hover:bg-[#f4f8fb]"><ClipboardCheck className="h-3.5 w-3.5" /> Screening</button>
+            <button onClick={onOpenCrisis} className="flex h-10 items-center justify-center gap-1.5 rounded-lg border border-[#ecdcdc] bg-[#fffafa] text-xs font-bold text-[#805555] hover:bg-[#edf5fc]"><ShieldCheck className="h-3.5 w-3.5" /> Support</button>
           </div>
 
-          {/* Progress Report Button */}
-          {onOpenProgressReport && (
-            <button
-              onClick={onOpenProgressReport}
-              className="flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-xl bg-white hover:bg-[#eaf2f9] text-[#1e3a5f] border border-[#d6e7f7] text-xs font-semibold transition-colors cursor-pointer shadow-xs"
-              title="View your 10-day observational progress report"
-            >
-              <FileText className="w-3.5 h-3.5 text-[#2b5984] shrink-0" />
-              <span>View Progress Report</span>
-            </button>
-          )}
-
-          {/* Search Conversations Field */}
-          <div className="relative">
-            <Search className="w-4 h-4 text-[#829ab1] absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              id="search-conversations-input"
-              type="text"
-              placeholder="Search conversations"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 bg-transparent hover:bg-[#edf4fa]/60 focus:bg-white text-sm italic text-[#334e68] placeholder:text-[#829ab1] placeholder:italic rounded-lg border border-transparent focus:border-[#b8d5ed] focus:outline-none transition-colors"
-            />
+          <div className="mt-3 grid gap-2">
+            {onOpenSelfHelp && <button onClick={() => onOpenSelfHelp()} className="flex h-10 items-center gap-2 rounded-lg px-3 text-left text-xs font-semibold text-[#49657f] hover:bg-white"><Sparkles className="h-4 w-4 text-[#2d638f]" /> Exercises</button>}
+            {onOpenProgressReport && <button onClick={onOpenProgressReport} className="flex h-10 items-center gap-2 rounded-lg px-3 text-left text-xs font-semibold text-[#49657f] hover:bg-white"><FileText className="h-4 w-4 text-[#2d638f]" /> Progress</button>}
           </div>
 
-          {/* History Section */}
-          <div className="pt-1">
-            <div className="flex items-center gap-2 text-xs font-semibold text-[#486581] uppercase tracking-wider mb-2 px-1">
-              <Clock className="w-3.5 h-3.5 stroke-[2]" />
-              <span>History</span>
-            </div>
-
-            <div className="space-y-1 max-h-[calc(100vh-460px)] overflow-y-auto pr-1">
-              {filteredConversations.length === 0 ? (
-                <p className="text-xs text-[#829ab1] italic px-2 py-3">
-                  {searchQuery ? 'No matching conversations' : 'No previous conversations yet'}
-                </p>
-              ) : (
-                filteredConversations.map((c) => {
-                  const isActive = activeConversationId === c.id;
-                  return (
-                    <div
-                      key={c.id}
-                      id={`conversation-item-${c.id}`}
-                      onClick={() => onSelectConversation(c.id)}
-                      className={`group flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-all duration-150 text-sm ${
-                        isActive
-                          ? 'bg-[#d8eaf7] text-[#102a43] font-medium shadow-xs'
-                          : 'text-[#486581] hover:bg-[#eaf2f9] hover:text-[#102a43]'
-                      }`}
-                    >
-                      <span className="truncate italic pr-2 font-normal">
-                        {c.title}
-                      </span>
-
-                      <button
-                        onClick={(e) => onDeleteConversation(c.id, e)}
-                        className="opacity-0 group-hover:opacity-100 p-1 hover:text-red-600 hover:bg-white/80 rounded transition-opacity"
-                        title="Delete conversation"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  );
-                })
-              )}
+          <div className="mt-5 flex min-h-0 flex-1 flex-col">
+            <label htmlFor="search-conversations-input" className="sr-only">Search conversations</label>
+            <div className="relative"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#5f7488]" /><input id="search-conversations-input" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search conversations" className="h-10 w-full rounded-xl border border-[#dce8f2] bg-white pl-9 pr-3 text-xs text-[#173d60] outline-none placeholder:text-[#5f7488] focus:border-[#9ebdd4]" /></div>
+            <div className="mt-5 flex items-center gap-2 px-1 text-[10px] font-bold uppercase tracking-[.12em] text-[#5f7488]"><Clock3 className="h-3.5 w-3.5" /> Conversations</div>
+            <div className="mt-2 min-h-0 flex-1 space-y-1 overflow-y-auto pr-1">
+              {filteredConversations.length === 0 ? <p className="px-2 py-4 text-xs leading-5 text-[#5f7488]">{searchQuery ? 'No matching conversations.' : 'Your conversations will appear here.'}</p> : filteredConversations.map((c) => {
+                const active = c.id === activeConversationId;
+                return <div key={c.id} id={`conversation-item-${c.id}`} onClick={() => onSelectConversation(c.id)} className={`group flex cursor-pointer items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-xs ${active ? 'bg-[#e4f0f8] font-bold text-[#173d60]' : 'text-[#607990] hover:bg-white hover:text-[#173d60]'}`}><span className="truncate">{c.title}</span><button onClick={(e) => onDeleteConversation(c.id, e)} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[#9aabba] opacity-0 group-hover:opacity-100 hover:bg-[#edf5fc] hover:text-[#a44f4f]" title="Delete conversation" aria-label={`Delete ${c.title}`}><Trash2 className="h-3.5 w-3.5" /></button></div>;
+              })}
             </div>
           </div>
         </div>
 
-        {/* Bottom Section: Profile & Uplifting Daily Card */}
-        <div className="space-y-3 pt-3 border-t border-[#e2ecf5]">
-          {/* User Profile Bar */}
-          <div className="flex items-center justify-between px-1">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-[#102a43] text-white flex items-center justify-center text-xs font-semibold shadow-xs">
-                {authUser ? authUser.email.charAt(0).toUpperCase() : (userProfile.initial || 'M')}
-              </div>
-              <div>
-                <span className="text-sm font-medium text-[#102a43] block leading-none">
-                  {authUser ? authUser.email.split('@')[0] : userProfile.name}
-                </span>
-                {authUser ? (
-                  <span className="text-[10px] text-emerald-600 font-semibold">
-                    Signed in
-                  </span>
-                ) : (
-                  <button
-                    onClick={onOpenAuth}
-                    className="flex items-center gap-1 text-[10px] text-[#627d98] hover:text-[#1e3a5f] font-semibold cursor-pointer transition-colors"
-                  >
-                    <LogIn className="w-3 h-3" />
-                    <span>Sign in</span>
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <button
-              id="open-settings-btn"
-              onClick={onOpenSettings}
-              className="p-1.5 text-[#627d98] hover:text-[#102a43] hover:bg-[#e4eff9] rounded-lg transition-colors cursor-pointer"
-              title="Settings & Backend architecture"
-            >
-              <Settings className="w-4 h-4 stroke-[1.8]" />
-            </button>
-          </div>
-
-          {/* Inspirational Widget Card */}
-          <div className="relative p-3 rounded-2xl bg-[#e5f0fa]/80 border border-[#d2e4f3] flex items-center justify-between gap-3 shadow-xs">
-            <div className="flex items-center gap-3">
-              <img
-                src={pottedPlantImg}
-                alt="Plant"
-                className="w-9 h-9 object-contain rounded-lg shrink-0"
-              />
-              <p className="text-xs text-[#243b53] font-medium leading-snug">
-                Small steps today,<br />brighter tomorrow.
-              </p>
-            </div>
-
-            <button
-              id="inspiration-heart-btn"
-              onClick={() => setHeartLiked(!heartLiked)}
-              className={`p-1.5 rounded-full transition-colors cursor-pointer ${
-                heartLiked ? 'text-rose-500 bg-rose-50' : 'text-[#627d98] hover:text-rose-500 hover:bg-white/60'
-              }`}
-              title={heartLiked ? 'Loved' : 'Send positive intention'}
-            >
-              <Heart
-                className="w-4 h-4"
-                fill={heartLiked ? 'currentColor' : 'none'}
-                strokeWidth={1.8}
-              />
-            </button>
+        <div className="border-t border-[#c9dfed] p-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#173d60] text-xs font-bold text-white">{authUser ? authUser.email.charAt(0).toUpperCase() : (userProfile.initial || 'G')}</div>
+            <div className="min-w-0 flex-1"><p className="truncate text-xs font-bold text-[#173d60]">{authUser ? authUser.email.split('@')[0] : userProfile.name}</p>{authUser ? <p className="mt-0.5 text-[10px] font-semibold text-[#2d638f]">Signed in</p> : <button onClick={onOpenAuth} className="mt-0.5 inline-flex items-center gap-1 text-[10px] font-bold text-[#5f7488] hover:text-[#173d60]"><LogIn className="h-3 w-3" /> Sign in to sync</button>}</div>
+            <button onClick={onOpenSettings} className="flex h-9 w-9 items-center justify-center rounded-lg text-[#5f7488] hover:bg-white hover:text-[#173d60]" title="Settings"><Settings className="h-4 w-4" /></button>
           </div>
         </div>
       </aside>

@@ -133,7 +133,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const HeaderIcon = activeTab === 'signup' ? UserPlus : LogIn;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0a192f]/45 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#173d60]/45 backdrop-blur-sm animate-fade-in">
       <div className="relative w-full max-w-md bg-[#f8fbfe] rounded-3xl border border-[#d6e7f7] shadow-2xl overflow-hidden">
         <div className="px-6 py-4 bg-white/95 border-b border-[#d8e7f5] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -141,7 +141,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <HeaderIcon className="w-5 h-5 text-[#244f77]" />
             </div>
             <div>
-              <h3 className="text-base font-semibold text-[#102a43]">Your Hamnafas account</h3>
+              <h3 className="text-base font-semibold text-[#173d60]">Your Hamnafas account</h3>
               <p className="text-xs text-[#627d98]">Keep your progress and conversations with you</p>
             </div>
           </div>
@@ -149,7 +149,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[#829ab1] hover:text-[#102a43] hover:bg-[#e4eff9] transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-[#5f7488] hover:text-[#173d60] hover:bg-[#e4eff9] transition-colors cursor-pointer"
             aria-label="Close authentication modal"
           >
             <X className="w-5 h-5" />
@@ -161,7 +161,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             type="button"
             onClick={() => handleTabChange('signup')}
             className={`flex-1 px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
-              activeTab === 'signup' ? 'bg-[#1e3a5f] text-white shadow-xs' : 'text-[#486581] hover:text-[#102a43]'
+              activeTab === 'signup' ? 'bg-[#1e3a5f] text-white shadow-xs' : 'text-[#486581] hover:text-[#173d60]'
             }`}
           >
             Sign Up
@@ -170,7 +170,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             type="button"
             onClick={() => handleTabChange('login')}
             className={`flex-1 px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
-              activeTab === 'login' ? 'bg-[#1e3a5f] text-white shadow-xs' : 'text-[#486581] hover:text-[#102a43]'
+              activeTab === 'login' ? 'bg-[#1e3a5f] text-white shadow-xs' : 'text-[#486581] hover:text-[#173d60]'
             }`}
           >
             Log In
@@ -179,18 +179,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         <form onSubmit={handleSubmit} noValidate className="p-6 space-y-4">
           <div>
-            <label htmlFor="auth-email" className="block text-xs font-semibold text-[#102a43] mb-1.5">
+            <label htmlFor="auth-email" className="block text-xs font-semibold text-[#173d60] mb-1.5">
               Email address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#829ab1]" />
+              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5f7488]" />
               <input
                 id="auth-email"
                 type="email"
                 autoComplete="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-[#cde0f0] rounded-xl text-sm text-[#102a43] focus:border-[#7ba8c9] focus:outline-none shadow-xs"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-[#cde0f0] rounded-xl text-sm text-[#173d60] focus:border-[#7ba8c9] focus:outline-none shadow-xs"
                 placeholder="you@example.com"
                 disabled={isSubmitting || Boolean(successMessage)}
               />
@@ -199,11 +199,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </div>
 
           <div>
-            <label htmlFor="auth-password" className="block text-xs font-semibold text-[#102a43] mb-1.5">
+            <label htmlFor="auth-password" className="block text-xs font-semibold text-[#173d60] mb-1.5">
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#829ab1]" />
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5f7488]" />
               <input
                 id="auth-password"
                 type="password"
@@ -211,7 +211,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 autoComplete={activeTab === 'signup' ? 'new-password' : 'current-password'}
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-[#cde0f0] rounded-xl text-sm text-[#102a43] focus:border-[#7ba8c9] focus:outline-none shadow-xs"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-[#cde0f0] rounded-xl text-sm text-[#173d60] focus:border-[#7ba8c9] focus:outline-none shadow-xs"
                 placeholder={activeTab === 'signup' ? 'At least 8 characters' : 'Enter your password'}
                 disabled={isSubmitting || Boolean(successMessage)}
               />
@@ -221,11 +221,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           {activeTab === 'signup' && (
             <div>
-              <label htmlFor="auth-confirm-password" className="block text-xs font-semibold text-[#102a43] mb-1.5">
+              <label htmlFor="auth-confirm-password" className="block text-xs font-semibold text-[#173d60] mb-1.5">
                 Confirm password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#829ab1]" />
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5f7488]" />
                 <input
                   id="auth-confirm-password"
                   type="password"
@@ -233,7 +233,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   autoComplete="new-password"
                   value={confirmPassword}
                   onChange={(event) => setConfirmPassword(event.target.value)}
-                  className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-[#cde0f0] rounded-xl text-sm text-[#102a43] focus:border-[#7ba8c9] focus:outline-none shadow-xs"
+                  className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-[#cde0f0] rounded-xl text-sm text-[#173d60] focus:border-[#7ba8c9] focus:outline-none shadow-xs"
                   placeholder="Enter your password again"
                   disabled={isSubmitting || Boolean(successMessage)}
                 />
@@ -248,7 +248,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <button
             type="submit"
             disabled={isSubmitting || Boolean(successMessage)}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1e3a5f] hover:bg-[#102a43] disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1e3a5f] hover:bg-[#173d60] disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer"
           >
             {activeTab === 'signup' ? <UserPlus className="w-4 h-4" /> : <LogIn className="w-4 h-4" />}
             <span>

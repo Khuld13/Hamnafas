@@ -47,7 +47,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0a192f]/45 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#173d60]/45 backdrop-blur-sm animate-fade-in">
       <div className="relative w-full max-w-2xl bg-[#f8fbfe] rounded-3xl border border-[#d6e7f7] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="px-6 py-4 bg-white/95 border-b border-[#d8e7f5] flex items-center justify-between">
@@ -56,7 +56,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <SettingsIcon className="w-5 h-5 text-[#244f77]" />
             </div>
             <div>
-              <h3 className="text-base font-semibold text-[#102a43]">
+              <h3 className="text-base font-semibold text-[#173d60]">
                 Settings
               </h3>
               <p className="text-xs text-[#627d98]">
@@ -67,7 +67,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[#829ab1] hover:text-[#102a43] hover:bg-[#e4eff9] transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-[#5f7488] hover:text-[#173d60] hover:bg-[#e4eff9] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -85,7 +85,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                         {authUser.email.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <p className="text-xs font-semibold text-[#102a43]">{authUser.email}</p>
+                        <p className="text-xs font-semibold text-[#173d60]">{authUser.email}</p>
                         <p className="text-[10px] text-[#627d98]">Signed in</p>
                       </div>
                     </div>
@@ -102,13 +102,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     <div className="flex items-center gap-2.5">
                       <UserCircle className="w-5 h-5 text-[#3b668f]" />
                       <div>
-                        <p className="text-xs font-semibold text-[#102a43]">Create an account</p>
+                        <p className="text-xs font-semibold text-[#173d60]">Create an account</p>
                         <p className="text-[10px] text-[#627d98]">Save your progress and conversations</p>
                       </div>
                     </div>
                     <button
                       onClick={onOpenAuth}
-                      className="px-3.5 py-1.5 rounded-xl bg-[#1e3a5f] hover:bg-[#102a43] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
+                      className="px-3.5 py-1.5 rounded-xl bg-[#1e3a5f] hover:bg-[#173d60] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
                     >
                       Sign Up
                     </button>
@@ -118,20 +118,20 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
               {/* User Name */}
               <div>
-                <label className="block text-xs font-semibold text-[#102a43] mb-1.5">
+                <label className="block text-xs font-semibold text-[#173d60] mb-1.5">
                   Your Display Name
                 </label>
                 <input
                   type="text"
                   value={profile.name}
                   onChange={(e) => setProfile({ ...profile, name: e.target.value, initial: e.target.value.charAt(0).toUpperCase() || 'M' })}
-                  className="w-full px-3.5 py-2.5 bg-white border border-[#cde0f0] rounded-xl text-sm text-[#102a43] focus:border-[#7ba8c9] focus:outline-none shadow-xs"
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#cde0f0] rounded-xl text-sm text-[#173d60] focus:border-[#7ba8c9] focus:outline-none shadow-xs"
                 />
               </div>
 
               {/* Preferred Language */}
               <div>
-                <label className="block text-xs font-semibold text-[#102a43] mb-1.5">
+                <label className="block text-xs font-semibold text-[#173d60] mb-1.5">
                   Default Communication Language
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -146,7 +146,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                         profile.preferredLanguage === item.id
                           ? 'bg-[#1e3a5f] text-white border-[#1e3a5f] shadow-xs'
-                          : 'bg-white text-[#102a43] border-[#d8e7f5] hover:bg-[#edf5fc]'
+                          : 'bg-white text-[#173d60] border-[#d8e7f5] hover:bg-[#edf5fc]'
                       }`}
                     >
                       <span className="text-xs font-bold block">{item.label}</span>
@@ -160,7 +160,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
               {/* AI Conversational Tone */}
               <div>
-                <label className="block text-xs font-semibold text-[#102a43] mb-1.5">
+                <label className="block text-xs font-semibold text-[#173d60] mb-1.5">
                   Hamnafas Conversational Tone
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -175,11 +175,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       onClick={() => setProfile({ ...profile, aiTone: t.id as any })}
                       className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                         profile.aiTone === t.id
-                          ? 'bg-[#dcebf8] text-[#102a43] border-[#8cb7db] font-medium shadow-xs'
+                          ? 'bg-[#dcebf8] text-[#173d60] border-[#8cb7db] font-medium shadow-xs'
                           : 'bg-white text-[#486581] border-[#d8e7f5] hover:bg-[#f0f6fb]'
                       }`}
                     >
-                      <span className="text-xs font-bold block text-[#102a43]">{t.title}</span>
+                      <span className="text-xs font-bold block text-[#173d60]">{t.title}</span>
                       <span className="text-[11px] text-[#627d98] leading-tight block mt-0.5">{t.desc}</span>
                     </button>
                   ))}
@@ -188,7 +188,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
               {/* Voice Companion Gender (Text-to-Speech) */}
               <div>
-                <label className="block text-xs font-semibold text-[#102a43] mb-1.5">
+                <label className="block text-xs font-semibold text-[#173d60] mb-1.5">
                   Voice Companion
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -202,15 +202,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       onClick={() => setProfile({ ...profile, voiceGender: v.id as 'female' | 'male' })}
                       className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                         (profile.voiceGender ?? 'female') === v.id
-                          ? 'bg-[#dcebf8] text-[#102a43] border-[#8cb7db] font-medium shadow-xs'
+                          ? 'bg-[#dcebf8] text-[#173d60] border-[#8cb7db] font-medium shadow-xs'
                           : 'bg-white text-[#486581] border-[#d8e7f5] hover:bg-[#f0f6fb]'
                       }`}
                     >
-                      <span className="text-xs font-bold block text-[#102a43]">{v.title}</span>
+                      <span className="text-xs font-bold block text-[#173d60]">{v.title}</span>
                     </button>
                   ))}
                 </div>
-                <p className="text-[10px] text-[#829ab1] mt-1.5">
+                <p className="text-[10px] text-[#5f7488] mt-1.5">
                   Voice availability depends on your device/browser. Some devices may not have a dedicated Urdu voice installed.
                 </p>
               </div>
@@ -232,7 +232,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </button>
             <button
               onClick={handleSave}
-              className="px-6 py-2 rounded-xl bg-[#1e3a5f] hover:bg-[#102a43] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
+              className="px-6 py-2 rounded-xl bg-[#1e3a5f] hover:bg-[#173d60] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
             >
               Save Settings
             </button>

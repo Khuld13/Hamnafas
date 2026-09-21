@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import confetti from 'canvas-confetti';
 import {
+  Sparkles, SunMedium, AudioLines,
   X,
   Wind,
-  Sparkles,
   Compass,
   BookOpen,
   Headphones,
@@ -42,6 +42,9 @@ interface SelfHelpModalProps {
 }
 
 const SOUND_OPTIONS: { id: SoundscapeType; icon: any; labelEn: string; labelRu: string }[] = [
+  { id: 'uplift' as SoundscapeType, icon: Sparkles, labelEn: 'Uplifting tones', labelRu: 'Uplift / halki khushi' },
+  { id: 'sunrise' as SoundscapeType, icon: SunMedium, labelEn: 'Sunrise melody', labelRu: 'Subah jaisi melody' },
+  { id: 'flow' as SoundscapeType, icon: AudioLines, labelEn: 'Soft musical flow', labelRu: 'Naram musical flow' },
   { id: 'rain', icon: CloudRain, labelEn: 'Soft Rain', labelRu: 'Barish' },
   { id: 'breeze', icon: Wind, labelEn: 'Cool Breeze', labelRu: 'Thandi Hawa' },
   { id: 'river', icon: Waves, labelEn: 'Flowing River', labelRu: 'Behta Pani' },
@@ -85,7 +88,9 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
 }) => {
   const isRu = lang === 'roman_urdu';
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [activeExercise, setActiveExercise] = useState<string | null>(null);
+  const [activeExercise, setActiveExercise] = useState<string | null>(() => {
+    try { return localStorage.getItem('hamnafas_interrupted_exercise_v1'); } catch { return null; }
+  });
 
   useEffect(() => {
     if (isOpen && initialExerciseId) {
@@ -115,6 +120,39 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
   // 5-4-3-2-1 Grounding step (0-indexed now, driving a single-card flow)
   const [groundingStep, setGroundingStep] = useState(0);
   const [groundingDone, setGroundingDone] = useState(false);
+
+  // Persist lightweight exercise progress so a browser refresh does not
+  // silently discard an in-progress guided exercise.
+  useEffect(() => {
+    try {
+      if (activeExercise) {
+        localStorage.setItem('hamnafas_interrupted_exercise_v1', activeExercise);
+        localStorage.setItem('hamnafas_exercise_progress_v1', JSON.stringify({
+          breathingPhase, breathingCount, breathCycles, groundingStep, groundingDone, gratitudeNotes, gratitudeSaved,
+        }));
+      }
+    } catch (e) {
+      console.warn('Exercise progress save failed:', e);
+    }
+  }, [activeExercise, breathingPhase, breathingCount, breathCycles, groundingStep, groundingDone, gratitudeNotes, gratitudeSaved]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    try {
+      const saved = localStorage.getItem('hamnafas_exercise_progress_v1');
+      if (!saved) return;
+      const progress = JSON.parse(saved);
+      if (typeof progress.breathingPhase === 'string') setBreathingPhase(progress.breathingPhase);
+      if (typeof progress.breathingCount === 'number') setBreathingCount(progress.breathingCount);
+      if (typeof progress.breathCycles === 'number') setBreathCycles(progress.breathCycles);
+      if (typeof progress.groundingStep === 'number') setGroundingStep(progress.groundingStep);
+      if (typeof progress.groundingDone === 'boolean') setGroundingDone(progress.groundingDone);
+      if (Array.isArray(progress.gratitudeNotes)) setGratitudeNotes(progress.gratitudeNotes);
+      if (typeof progress.gratitudeSaved === 'boolean') setGratitudeSaved(progress.gratitudeSaved);
+    } catch (e) {
+      console.warn('Exercise progress restore failed:', e);
+    }
+  }, [isOpen]);
 
   // Box Breathing Timer Loop
   useEffect(() => {
@@ -150,7 +188,6 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
     { id: 'journal', label: isRu ? 'Shukr Journal' : 'Micro-Gratitude' },
     { id: 'sounds', label: isRu ? 'Sukoon Aawazein' : 'Soundscapes' },
     { id: 'routine', label: isRu ? 'Rozana Aadatein' : 'Daily Habits' },
-    { id: 'crisis', label: isRu ? 'Crisis Numbers' : 'Crisis Hotlines' },
   ];
 
   const filteredResources =
@@ -203,27 +240,27 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
   const currentGrounding = GROUNDING_STEPS[groundingStep];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0a192f]/45 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-2xl bg-[#f8fbfe] rounded-3xl border border-[#d6e7f7] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-[#173d60]/45 backdrop-blur-sm animate-fade-in">
+      <div className="relative w-full max-w-2xl bg-[#f8fbfe] rounded-2xl sm:rounded-3xl border border-[#d6e7f7] shadow-2xl overflow-hidden flex flex-col max-h-[calc(100dvh-1rem)] sm:max-h-[90vh]">
         {/* Header */}
-        <div className="px-6 py-4 bg-white/95 border-b border-[#d8e7f5] flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
+        <div className="px-4 sm:px-6 py-4 bg-white/95 border-b border-[#d8e7f5] flex items-center justify-between">
+          <div className="flex min-w-0 items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-[#e3effa] text-[#1e3a5f] flex items-center justify-center shadow-xs">
               <Sparkles className="w-5 h-5 text-[#244f77]" />
             </div>
             <div>
-              <h3 className="text-base font-semibold text-[#102a43]">{isRu ? 'Self-Help & Tools' : 'Self-Help & Tools'}</h3>
-              <p className="text-xs text-[#627d98]">{isRu ? 'Thora halka mehsoos karne ke liye chhote tools.' : 'Simple tools to feel a little lighter.'}</p>
+              <h3 className="text-base font-semibold text-[#173d60]">{isRu ? 'Self-Help & Tools' : 'Self-Help & Tools'}</h3>
+              <p className="text-xs text-[#5f7488] leading-5 break-words">{isRu ? 'Thora halka mehsoos karne ke liye chhote tools.' : 'Simple tools to feel a little lighter.'}</p>
             </div>
           </div>
 
-          <button onClick={onClose} className="p-1.5 rounded-lg text-[#829ab1] hover:text-[#102a43] hover:bg-[#e4eff9] transition-colors cursor-pointer">
+          <button onClick={onClose} className="p-1.5 rounded-lg text-[#5f7488] hover:text-[#173d60] hover:bg-[#e4eff9] transition-colors cursor-pointer">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Categories Bar */}
-        <div className="flex items-center gap-1.5 px-6 py-2.5 bg-[#edf4fb] border-b border-[#d8e7f5] overflow-x-auto no-scrollbar">
+        <div className="flex items-center gap-1.5 px-3 sm:px-6 py-2.5 bg-[#edf4fb] border-b border-[#d8e7f5] overflow-x-auto no-scrollbar">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
@@ -241,13 +278,13 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto flex-1 space-y-4">
+        <div className="px-3 py-4 sm:px-6 overflow-y-auto flex-1 space-y-4">
           {/* Active Exercise Views */}
           {activeExercise === 'breathing-box' && (
-            <div className="p-6 rounded-2xl bg-white border border-[#d6e7f7] shadow-sm text-center space-y-6">
+            <div className="p-4 sm:p-6 rounded-2xl bg-white border border-[#d6e7f7] shadow-sm text-center space-y-6">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-[#627d98] uppercase tracking-wider">Box Breathing</span>
-                <button onClick={() => setActiveExercise(null)} className="text-xs text-[#486581] hover:underline cursor-pointer">
+                <button onClick={() => { setActiveExercise(null); localStorage.removeItem('hamnafas_interrupted_exercise_v1'); localStorage.removeItem('hamnafas_exercise_progress_v1'); }} className="text-xs text-[#486581] hover:underline cursor-pointer">
                   {isRu ? '\u2190 Wapas' : '\u2190 Back to tools'}
                 </button>
               </div>
@@ -268,11 +305,11 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
                 >
                   <div className="text-center">
                     <span className="text-xs font-semibold uppercase tracking-wider text-[#244f77] block">{breathingPhase}</span>
-                    <span className="text-3xl font-bold text-[#102a43]">{breathingCount}s</span>
+                    <span className="text-3xl font-bold text-[#173d60]">{breathingCount}s</span>
                   </div>
                 </motion.div>
                 {breathCycles > 0 && (
-                  <p className="text-[11px] text-[#829ab1] mt-3">
+                  <p className="text-[11px] text-[#5f7488] mt-3">
                     {isRu ? `${breathCycles} cycle mukammal` : `${breathCycles} cycle${breathCycles > 1 ? 's' : ''} completed`}
                   </p>
                 )}
@@ -287,7 +324,7 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
                 <div className="flex justify-center gap-3 pt-2">
                   <button
                     onClick={() => setIsBreathingActive(!isBreathingActive)}
-                    className="px-6 py-2.5 rounded-full bg-[#1e3a5f] hover:bg-[#102a43] text-white text-xs font-semibold flex items-center gap-2 shadow-xs cursor-pointer"
+                    className="px-6 py-2.5 rounded-full bg-[#1e3a5f] hover:bg-[#173d60] text-white text-xs font-semibold flex items-center gap-2 shadow-xs cursor-pointer"
                   >
                     {isBreathingActive ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                     <span>{isBreathingActive ? (isRu ? 'Ruk Jayein' : 'Pause') : isRu ? 'Shuru Karein' : 'Start'}</span>
@@ -295,7 +332,7 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
                   {breathCycles >= 1 && (
                     <button
                       onClick={() => markDoneAndCelebrate('exercise')}
-                      className="px-5 py-2.5 rounded-full bg-[#eaf3e4] hover:bg-[#dcecd2] text-[#3c5535] text-xs font-semibold flex items-center gap-1.5 shadow-xs cursor-pointer"
+                      className="px-5 py-2.5 rounded-full bg-[#e7f3fa] hover:bg-[#d8ebf6] text-[#3c5535] text-xs font-semibold flex items-center gap-1.5 shadow-xs cursor-pointer"
                     >
                       <Check className="w-3.5 h-3.5" />
                       <span>{isRu ? 'Aaj Ke Liye Done' : 'Done for today'}</span>
@@ -307,10 +344,10 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
           )}
 
           {activeExercise === 'breathing-478' && (
-            <div className="p-6 rounded-2xl bg-white border border-[#d6e7f7] shadow-sm text-center space-y-4">
+            <div className="p-4 sm:p-6 rounded-2xl bg-white border border-[#d6e7f7] shadow-sm text-center space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-[#627d98] uppercase tracking-wider">4-7-8 Relaxing Breath</span>
-                <button onClick={() => setActiveExercise(null)} className="text-xs text-[#486581] hover:underline cursor-pointer">
+                <button onClick={() => { setActiveExercise(null); localStorage.removeItem('hamnafas_interrupted_exercise_v1'); localStorage.removeItem('hamnafas_exercise_progress_v1'); }} className="text-xs text-[#486581] hover:underline cursor-pointer">
                   {isRu ? '\u2190 Wapas' : '\u2190 Back to tools'}
                 </button>
               </div>
@@ -338,7 +375,7 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
 
               <button
                 onClick={() => markDoneAndCelebrate('exercise')}
-                className="mx-auto px-5 py-2.5 rounded-full bg-[#eaf3e4] hover:bg-[#dcecd2] text-[#3c5535] text-xs font-semibold flex items-center gap-1.5 shadow-xs cursor-pointer"
+                className="mx-auto px-5 py-2.5 rounded-full bg-[#e7f3fa] hover:bg-[#d8ebf6] text-[#3c5535] text-xs font-semibold flex items-center gap-1.5 shadow-xs cursor-pointer"
               >
                 <Check className="w-3.5 h-3.5" />
                 <span>{isRu ? 'Aaj Ke Liye Done' : 'Done for today'}</span>
@@ -348,10 +385,10 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
 
           {/* Redesigned Grounding: single guided card + progress dots, not a clickable MCQ list */}
           {activeExercise === 'grounding-54321' && (
-            <div className="p-6 rounded-2xl bg-white border border-[#d6e7f7] shadow-sm space-y-5">
+            <div className="p-4 sm:p-6 rounded-2xl bg-white border border-[#d6e7f7] shadow-sm space-y-5">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-[#627d98] uppercase tracking-wider">5-4-3-2-1 Grounding</span>
-                <button onClick={() => setActiveExercise(null)} className="text-xs text-[#486581] hover:underline cursor-pointer">
+                <button onClick={() => { setActiveExercise(null); localStorage.removeItem('hamnafas_interrupted_exercise_v1'); localStorage.removeItem('hamnafas_exercise_progress_v1'); }} className="text-xs text-[#486581] hover:underline cursor-pointer">
                   {isRu ? '\u2190 Wapas' : '\u2190 Back to tools'}
                 </button>
               </div>
@@ -391,10 +428,10 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
                     animate={{ opacity: 1, scale: 1 }}
                     className="text-center py-8"
                   >
-                    <div className="w-14 h-14 rounded-full bg-[#eaf3e4] text-[#4c6b43] flex items-center justify-center mx-auto mb-3 animate-pop-in">
+                    <div className="w-14 h-14 rounded-full bg-[#e7f3fa] text-[#2d638f] flex items-center justify-center mx-auto mb-3 animate-pop-in">
                       <Check className="w-7 h-7" />
                     </div>
-                    <p className="text-sm font-semibold text-[#102a43]">
+                    <p className="text-sm font-semibold text-[#173d60]">
                       {isRu ? 'Zabardast! Aap yahin, is lamhe mein hain.' : 'Nicely done. You\u2019re right here, in this moment.'}
                     </p>
                   </motion.div>
@@ -413,7 +450,7 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
                   </button>
                   <button
                     onClick={handleGroundingNext}
-                    className="px-6 py-2.5 rounded-full bg-[#1e3a5f] hover:bg-[#102a43] text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs cursor-pointer"
+                    className="px-6 py-2.5 rounded-full bg-[#1e3a5f] hover:bg-[#173d60] text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs cursor-pointer"
                   >
                     <span>{groundingStep === GROUNDING_STEPS.length - 1 ? (isRu ? 'Mukammal Karein' : 'Finish') : isRu ? 'Agla' : 'Next'}</span>
                     <ChevronRight className="w-3.5 h-3.5" />
@@ -436,10 +473,10 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
           )}
 
           {activeExercise === 'gratitude-journal' && (
-            <div className="p-6 rounded-2xl bg-white border border-[#d6e7f7] shadow-sm space-y-4">
+            <div className="p-4 sm:p-6 rounded-2xl bg-white border border-[#d6e7f7] shadow-sm space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-[#627d98] uppercase tracking-wider">{isRu ? 'Shukr-Guzari Journal' : 'Daily Micro-Gratitude'}</span>
-                <button onClick={() => setActiveExercise(null)} className="text-xs text-[#486581] hover:underline cursor-pointer">
+                <button onClick={() => { setActiveExercise(null); localStorage.removeItem('hamnafas_interrupted_exercise_v1'); localStorage.removeItem('hamnafas_exercise_progress_v1'); }} className="text-xs text-[#486581] hover:underline cursor-pointer">
                   {isRu ? '\u2190 Wapas' : '\u2190 Back to tools'}
                 </button>
               </div>
@@ -461,7 +498,7 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
                         updated[idx] = e.target.value;
                         setGratitudeNotes(updated);
                       }}
-                      className="flex-1 px-3.5 py-2 bg-[#f4f8fc] border border-[#cde0f0] rounded-xl text-xs text-[#102a43] focus:border-[#7ba8c9] focus:outline-none"
+                      className="flex-1 px-3.5 py-2 bg-[#f4f8fc] border border-[#cde0f0] rounded-xl text-xs text-[#173d60] focus:border-[#7ba8c9] focus:outline-none"
                     />
                   </div>
                 ))}
@@ -473,7 +510,7 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
                 </span>
                 <button
                   onClick={handleSaveGratitude}
-                  className="px-5 py-2 rounded-xl bg-[#1e3a5f] hover:bg-[#102a43] text-white text-xs font-semibold shadow-xs cursor-pointer"
+                  className="px-5 py-2 rounded-xl bg-[#1e3a5f] hover:bg-[#173d60] text-white text-xs font-semibold shadow-xs cursor-pointer"
                 >
                   {isRu ? 'Save Karein' : 'Save Reflection'}
                 </button>
@@ -484,7 +521,7 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
           {/* Soundscapes grid — several soothing options since one sound doesn't suit everyone */}
           {!activeExercise && selectedCategory === 'sounds' && (
             <div className="space-y-3">
-              <p className="text-xs text-[#829ab1] px-1">
+              <p className="text-xs text-[#5f7488] px-1">
                 {isRu ? 'Har insaan ke liye alag aawaz sukoon deti hai — kuch try karein.' : 'What feels calming differs from person to person \u2014 try a few.'}
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -513,7 +550,7 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
 
           {/* Daily Habits tab — the guilt-free streak widget, full view */}
           {!activeExercise && selectedCategory === 'routine' && careItems && careStreak && onToggleCareItem && (
-            <div className="p-5 rounded-2xl bg-white border border-[#d6e7f7] shadow-xs">
+            <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#d6e7f7] shadow-xs">
               <CareStreak items={careItems} data={careStreak} onToggleItem={onToggleCareItem} lang={lang} />
             </div>
           )}
@@ -534,10 +571,10 @@ export const SelfHelpModal: React.FC<SelfHelpModalProps> = ({
                         <span className="text-[10px] font-bold uppercase tracking-wider text-[#627d98] px-2 py-0.5 rounded-md bg-[#edf5fc]">
                           {res.category}
                         </span>
-                        {res.duration && <span className="text-[11px] text-[#829ab1] font-medium">{res.duration}</span>}
+                        {res.duration && <span className="text-[11px] text-[#5f7488] font-medium">{res.duration}</span>}
                       </div>
 
-                      <h4 className="text-sm font-bold text-[#102a43] group-hover:text-[#1e3a5f] transition-colors">{res.title}</h4>
+                      <h4 className="text-sm font-bold text-[#173d60] group-hover:text-[#1e3a5f] transition-colors">{res.title}</h4>
 
                       {res.titleRomanUrdu && <p className="text-[11px] text-[#557e9d] italic mb-1">{res.titleRomanUrdu}</p>}
 

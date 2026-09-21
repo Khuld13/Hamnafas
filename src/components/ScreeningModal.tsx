@@ -128,41 +128,39 @@ export const ScreeningModal: React.FC<ScreeningModalProps> = ({
 
   const getSeverityBadgeClass = (severity: string) => {
     switch (severity) {
-      case 'Minimal':
-        return 'bg-emerald-100 text-emerald-800 border-emerald-300';
-      case 'Mild':
-        return 'bg-amber-100 text-amber-800 border-amber-300';
-      case 'Moderate':
-        return 'bg-orange-100 text-orange-800 border-orange-300';
       case 'Moderately Severe':
       case 'Severe':
-        return 'bg-rose-100 text-rose-800 border-rose-300';
+        return 'bg-[#edf5fb] text-[#173d60] border-[#9fc3dc]';
+      case 'Moderate':
+        return 'bg-[#e5f1fa] text-[#245675] border-[#b8d3e6]';
+      case 'Mild':
+      case 'Minimal':
       default:
-        return 'bg-blue-100 text-blue-800 border-blue-300';
+        return 'bg-[#f2f7fb] text-[#486581] border-[#cbddea]';
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0a192f]/45 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-2xl bg-[#f8fbfe] rounded-3xl border border-[#d6e7f7] shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+    <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-[#173d60]/35 backdrop-blur-[6px] animate-fade-in">
+      <div className="relative w-full max-w-3xl bg-[#eef6fc] rounded-2xl sm:rounded-[28px] border border-[#cfe2f2] shadow-[0_24px_80px_rgba(23,61,96,.22)] overflow-hidden flex flex-col max-h-[calc(100dvh-1rem)] sm:max-h-[94vh]">
         {/* Header */}
-        <div className="px-6 py-4 bg-white/95 border-b border-[#d8e7f5] flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#e3effa] text-[#1e3a5f] flex items-center justify-center shadow-xs">
+        <div className="px-3 sm:px-7 py-4 sm:py-5 bg-white flex items-center justify-between">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#dcecf9] text-[#173d60] flex items-center justify-center">
               {screeningType === 'phq9' ? (
                 <ClipboardCheck className="w-5 h-5 text-[#244f77]" />
               ) : (
                 <Activity className="w-5 h-5 text-[#244f77]" />
               )}
             </div>
-            <div>
-              <h3 className="text-base font-semibold text-[#102a43] flex items-center gap-2">
-                <span>{screeningType === 'phq9' ? 'PHQ-9 Depression Screening' : 'GAD-7 Anxiety Screening'}</span>
-                <span className="text-[11px] font-normal px-2 py-0.5 rounded-full bg-[#dcebf8] text-[#1e3a5f]">
-                  Validated Clinical Framework
+            <div className="min-w-0">
+              <h3 className="text-sm sm:text-base font-semibold text-[#173d60] flex items-center gap-2">
+                <span className="break-words">{screeningType === 'phq9' ? 'PHQ-9 Depression Screening' : 'GAD-7 Anxiety Screening'}</span>
+                <span className="text-[10px] sm:text-[11px] font-medium px-2 py-1 rounded-full whitespace-normal text-center bg-[#edf5fb] text-[#486581]">
+                  Widely used screening tool
                 </span>
               </h3>
-              <p className="text-xs text-[#627d98]">
+              <p className="text-xs text-[#5f7488] leading-5 break-words">
                 {screeningType === 'phq9'
                   ? 'Standard 9-item Patient Health Questionnaire for mood & fatigue'
                   : 'Standard 7-item Generalized Anxiety scale for tension & worry'}
@@ -172,28 +170,28 @@ export const ScreeningModal: React.FC<ScreeningModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[#829ab1] hover:text-[#102a43] hover:bg-[#e4eff9] transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-[#5f7488] hover:text-[#173d60] hover:bg-[#e4eff9] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Sub-bar: Type Selector & Language Switcher */}
-        <div className="flex flex-wrap items-center justify-between gap-2 px-6 py-2.5 bg-[#edf4fb] border-b border-[#d8e7f5]">
+        <div className="flex flex-wrap items-center justify-between gap-3 px-3 sm:px-7 py-3 bg-[#e5f1fa]">
           {/* Framework tabs */}
-          <div className="inline-flex p-0.5 bg-white/80 rounded-xl border border-[#d2e4f3] shadow-xs">
+          <div className="flex flex-wrap p-1 bg-white rounded-2xl border border-[#cfe2f2]">
             <button
               onClick={() => handleSwitchType('phq9')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                screeningType === 'phq9' ? 'bg-[#1e3a5f] text-white shadow-xs' : 'text-[#486581] hover:text-[#102a43]'
+              className={`px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-lg whitespace-normal text-xs font-medium transition-all cursor-pointer ${
+                screeningType === 'phq9' ? 'bg-[#2d628c] text-white shadow-sm' : 'text-[#486581] hover:text-[#173d60]'
               }`}
             >
               PHQ-9 (Depression)
             </button>
             <button
               onClick={() => handleSwitchType('gad7')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                screeningType === 'gad7' ? 'bg-[#1e3a5f] text-white shadow-xs' : 'text-[#486581] hover:text-[#102a43]'
+              className={`px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-lg whitespace-normal text-xs font-medium transition-all cursor-pointer ${
+                screeningType === 'gad7' ? 'bg-[#2d628c] text-white shadow-sm' : 'text-[#486581] hover:text-[#173d60]'
               }`}
             >
               GAD-7 (Anxiety)
@@ -202,30 +200,30 @@ export const ScreeningModal: React.FC<ScreeningModalProps> = ({
         </div>
 
         {/* Modal Main Body */}
-        <div className="p-6 overflow-y-auto flex-1">
+        <div className="px-3 sm:px-10 py-5 sm:py-9 overflow-y-auto flex-1">
           {!result ? (
             /* ================= QUESTION FLOW ================= */
-            <div className="space-y-6">
+            <div className="max-w-2xl mx-auto space-y-7">
               {/* Progress bar */}
               <div>
-                <div className="flex items-center justify-between text-xs font-medium text-[#486581] mb-1.5">
+                <div className="flex items-center justify-between text-xs font-semibold text-[#486581] mb-2">
                   <span>
                     Question {currentQuestionIndex + 1} of {totalQuestions}
                   </span>
                   <span>{progressPercent}% completed</span>
                 </div>
-                <div className="w-full h-2 bg-[#dcebf8] rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-[#d6e8f6] rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-[#1e3a5f] transition-all duration-300 rounded-full"
+                    className="h-full bg-[#2d628c] transition-all duration-300 rounded-full"
                     style={{ width: `${progressPercent}%` }}
                   />
                 </div>
               </div>
 
               {/* Timeframe Instruction */}
-              <div className="p-3 bg-[#e8f2fa] rounded-xl border border-[#d2e4f3] text-xs text-[#244f77] flex items-center gap-2">
+              <div className="px-3 sm:px-4 py-3 bg-white/70 rounded-2xl text-sm text-[#365f7f] flex items-start gap-2.5">
                 <Info className="w-4 h-4 shrink-0 text-[#3b668f]" />
-                <span>
+                <span className="min-w-0 break-words leading-6">
                   {lang === 'roman_urdu'
                     ? 'Pichle 2 hafton ke dauran, aapko darj zail masail ka kitna saamna raha?'
                     : 'Over the last 2 weeks, how often have you been bothered by the following?'}
@@ -233,33 +231,34 @@ export const ScreeningModal: React.FC<ScreeningModalProps> = ({
               </div>
 
               {/* Current Question Box */}
-              <div className="p-5 rounded-2xl bg-white border border-[#d8e7f5] shadow-xs">
-                <span className="inline-block text-xs font-bold text-[#627d98] mb-1">
-                  Item #{currentQuestion.id}
-                </span>
-                <h4 className="text-base sm:text-lg font-medium text-[#102a43] leading-snug">
+              <div className="px-4 sm:px-7 py-6 sm:py-7 rounded-[20px] sm:rounded-[24px] bg-white border border-[#d5e6f3] shadow-[0_8px_28px_rgba(45,98,140,.08)]">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-semibold text-[#5f7488] uppercase tracking-[.12em]">Question {currentQuestionIndex + 1}</span>
+                  <span className="text-xs font-medium text-[#5f7488]">{totalQuestions} total</span>
+                </div>
+                <h4 className="text-lg sm:text-2xl break-words font-semibold text-[#173d60] leading-snug tracking-[-.015em]">
                   {getQuestionText()}
                 </h4>
               </div>
 
               {/* Option Selection List */}
-              <div className="space-y-2.5">
+              <div className="space-y-3">
                 {SCREENING_OPTIONS.map((opt) => {
                   const isSelected = answers[currentQuestion.id] === opt.value;
                   return (
                     <button
                       key={opt.value}
                       onClick={() => handleSelectOption(opt.value)}
-                      className={`w-full p-3.5 rounded-2xl border text-left transition-all duration-150 flex items-center justify-between cursor-pointer ${
+                      className={`w-full px-5 py-4 rounded-2xl border text-left transition-all duration-150 flex items-center justify-between cursor-pointer ${
                         isSelected
-                          ? 'bg-[#1e3a5f] text-white border-[#1e3a5f] shadow-sm'
-                          : 'bg-white hover:bg-[#edf5fc] text-[#102a43] border-[#d4e4f2]'
+                          ? 'bg-[#2d628c] text-white border-[#2d628c] shadow-md'
+                          : 'bg-white hover:bg-[#f4f9fd] text-[#173d60] border-[#d5e6f3] hover:border-[#aac9df]'
                       }`}
                     >
                       <span className="text-sm font-medium">{getOptionLabel(opt)}</span>
                       <span
                         className={`text-xs px-2 py-0.5 rounded-md font-semibold ${
-                          isSelected ? 'bg-white/20 text-white' : 'bg-[#eaf2f9] text-[#486581]'
+                          isSelected ? 'bg-white/20 text-white' : 'bg-[#edf5fb] text-[#55728b]'
                         }`}
                       >
                         +{opt.value} pt{opt.value !== 1 ? 's' : ''}
@@ -274,7 +273,7 @@ export const ScreeningModal: React.FC<ScreeningModalProps> = ({
                 <button
                   disabled={currentQuestionIndex === 0}
                   onClick={() => setCurrentQuestionIndex((prev) => Math.max(0, prev - 1))}
-                  className="px-4 py-2 rounded-xl text-xs font-medium text-[#486581] hover:bg-[#e4eff9] disabled:opacity-30 cursor-pointer flex items-center gap-1.5"
+                  className="px-4 py-2 rounded-xl text-sm font-medium text-[#486581] hover:bg-[#e4eff9] disabled:opacity-30 cursor-pointer flex items-center gap-1.5"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>Previous</span>
@@ -282,7 +281,7 @@ export const ScreeningModal: React.FC<ScreeningModalProps> = ({
 
                 <button
                   onClick={handleReset}
-                  className="text-xs text-[#829ab1] hover:text-[#102a43] underline transition-colors cursor-pointer"
+                  className="text-sm text-[#5d7890] hover:text-[#173d60] underline transition-colors cursor-pointer"
                 >
                   Reset
                 </button>
@@ -290,7 +289,7 @@ export const ScreeningModal: React.FC<ScreeningModalProps> = ({
             </div>
           ) : (
             /* ================= RESULT CARD ================= */
-            <div className="space-y-5">
+            <div className="max-w-2xl mx-auto space-y-5">
               {/* Crisis Escalation Banner if triggered */}
               {result.crisisTriggered && (
                 <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-950 shadow-xs">
@@ -330,14 +329,14 @@ export const ScreeningModal: React.FC<ScreeningModalProps> = ({
               )}
 
               {/* Score & Severity Summary Box */}
-              <div className="p-5 rounded-2xl bg-white border border-[#d6e7f7] shadow-sm space-y-4">
+              <div className="p-6 sm:p-7 rounded-[24px] bg-white border border-[#d5e6f3] shadow-[0_8px_28px_rgba(45,98,140,.08)] space-y-5">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-[#edf4fb]">
                   <div>
                     <span className="text-xs font-bold text-[#627d98] uppercase tracking-wider">
                       {result.type === 'phq9' ? 'PHQ-9 Total Score' : 'GAD-7 Total Score'}
                     </span>
                     <div className="flex items-baseline gap-2 mt-0.5">
-                      <span className="text-3xl font-bold text-[#102a43]">{result.score}</span>
+                      <span className="text-3xl font-bold text-[#173d60]">{result.score}</span>
                       <span className="text-sm font-medium text-[#627d98]">/ {result.maxScore}</span>
                     </div>
                   </div>
@@ -362,17 +361,17 @@ export const ScreeningModal: React.FC<ScreeningModalProps> = ({
                     <div
                       className={`h-full rounded-full transition-all duration-700 ${
                         result.score <= 4
-                          ? 'bg-emerald-500'
+                          ? 'bg-[#8db7d3]'
                           : result.score <= 9
-                          ? 'bg-amber-500'
+                          ? 'bg-[#6f9fbe]'
                           : result.score <= 14
-                          ? 'bg-orange-500'
-                          : 'bg-rose-600'
+                          ? 'bg-[#4f83a6]'
+                          : 'bg-[#2d628c]'
                       }`}
                       style={{ width: `${Math.min(100, (result.score / result.maxScore) * 100)}%` }}
                     />
                   </div>
-                  <div className="flex justify-between text-[10px] text-[#829ab1] mt-1 font-medium">
+                  <div className="flex justify-between text-[10px] text-[#5f7488] mt-1 font-medium">
                     <span>Minimal (0)</span>
                     <span>Mild</span>
                     <span>Moderate</span>
@@ -381,7 +380,7 @@ export const ScreeningModal: React.FC<ScreeningModalProps> = ({
                 </div>
 
                 {/* Summary Explanation */}
-                <p className="text-sm text-[#243b53] leading-relaxed">
+                <p className="text-sm text-[#173d60] leading-relaxed">
                   {lang === 'roman_urdu'
                     ? result.summaryRomanUrdu
                     : result.summaryEn}
@@ -389,8 +388,8 @@ export const ScreeningModal: React.FC<ScreeningModalProps> = ({
               </div>
 
               {/* Actionable Tailored Recommendations */}
-              <div className="p-4 rounded-2xl bg-[#edf5fc] border border-[#d2e4f3] space-y-2.5">
-                <h4 className="text-xs font-bold text-[#102a43] uppercase tracking-wider flex items-center gap-1.5">
+              <div className="p-5 rounded-[22px] bg-[#e5f1fa] border border-[#cfe2f2] space-y-2.5">
+                <h4 className="text-xs font-bold text-[#173d60] uppercase tracking-wider flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-[#3b668f]" />
                   <span>
                     {lang === 'roman_urdu'
@@ -422,7 +421,7 @@ export const ScreeningModal: React.FC<ScreeningModalProps> = ({
 
                 <button
                   onClick={handleDiscussInChat}
-                  className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-[#1e3a5f] hover:bg-[#102a43] active:scale-98 text-white text-xs font-medium flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
+                  className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-[#2d628c] hover:bg-[#245675] active:scale-98 text-white text-xs font-medium flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
                 >
                   <MessageSquare className="w-4 h-4" />
                   <span>Discuss with Hamnafas in Chat →</span>

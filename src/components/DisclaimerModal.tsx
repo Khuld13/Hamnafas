@@ -18,7 +18,7 @@ export const DisclaimerModal: React.FC<DisclaimerModalProps> = ({
   const isRu = lang === 'roman_urdu';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0a192f]/50 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#173d60]/50 backdrop-blur-sm animate-fade-in">
       <div className="relative w-full max-w-xl bg-[#fefcfc] rounded-3xl border border-rose-200 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="px-6 py-5 bg-rose-50 border-b border-rose-200 flex items-center gap-3">
@@ -72,7 +72,7 @@ export const DisclaimerModal: React.FC<DisclaimerModalProps> = ({
           <div className="pt-2">
             <button
               onClick={onAcknowledge}
-              className="w-full py-3.5 px-6 rounded-2xl bg-[#1e3a5f] hover:bg-[#102a43] active:scale-[0.99] text-white text-sm font-semibold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer"
+              className="w-full py-3.5 px-6 rounded-2xl bg-[#1e3a5f] hover:bg-[#173d60] active:scale-[0.99] text-white text-sm font-semibold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer"
             >
               <span>{isRu ? 'Theek hai, aage badhein' : 'I understand, continue'}</span>
               <ArrowRight className="w-4 h-4" />

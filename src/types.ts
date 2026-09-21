@@ -145,7 +145,7 @@ export interface AuthUser {
 // Soothing sounds — kept intentionally varied since what feels calming
 // differs from person to person (some prefer nature sounds, some prefer
 // steady drone/white-noise, some prefer a familiar instrumental tone).
-export type SoundscapeType = 'rain' | 'breeze' | 'river' | 'night' | 'fan' | 'tanpura';
+export type SoundscapeType = 'rain' | 'breeze' | 'river' | 'night' | 'fan' | 'tanpura' | 'uplift' | 'sunrise' | 'flow';
 
 export interface CareRoutineItem {
   id: string;

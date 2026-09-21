@@ -52,13 +52,13 @@ export const CareStreak: React.FC<CareStreakProps> = ({
         <div className="flex items-center gap-2">
           <div
             className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
-              data.streak > 0 ? 'bg-[#f7e3ce] text-[#b8703a]' : 'bg-[#edf5fc] text-[#7ba8c9]'
+              data.streak > 0 ? 'bg-[#f7e3ce] text-[#2b6f9f]' : 'bg-[#edf5fc] text-[#7ba8c9]'
             }`}
           >
             <Flame className={`w-4.5 h-4.5 ${data.streak > 0 ? 'animate-flame' : ''}`} />
           </div>
           <div>
-            <p className="text-sm font-bold text-[#102a43] leading-none">
+            <p className="text-sm font-bold text-[#173d60] leading-none">
               {data.streak > 0
                 ? isRu
                   ? `${data.streak} din ka silsila`
@@ -67,7 +67,7 @@ export const CareStreak: React.FC<CareStreakProps> = ({
                 ? 'Aaj se shuru karein'
                 : 'Start today'}
             </p>
-            <p className="text-[11px] text-[#829ab1] mt-0.5">
+            <p className="text-[11px] text-[#5f7488] mt-0.5">
               {isRu
                 ? 'Din chhoot jaye to bhi koi baat nahi — hum yahin hain.'
                 : "Miss a day and it's completely fine — we'll still be here."}
@@ -76,14 +76,14 @@ export const CareStreak: React.FC<CareStreakProps> = ({
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           {data.bestStreak > 0 && (
-            <span className="text-[10px] font-semibold text-[#829ab1] bg-[#f4f8fc] px-2.5 py-1 rounded-full border border-[#e2ecf5]">
+            <span className="text-[10px] font-semibold text-[#5f7488] bg-[#f4f8fc] px-2.5 py-1 rounded-full border border-[#e2ecf5]">
               {isRu ? `Best: ${data.bestStreak} din` : `Best: ${data.bestStreak}d`}
             </span>
           )}
           {onOpenProgressReport && (
             <button
               onClick={onOpenProgressReport}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1e3a5f] hover:bg-[#102a43] text-white text-[11px] font-semibold shadow-xs transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1e3a5f] hover:bg-[#173d60] text-white text-[11px] font-semibold shadow-xs transition-colors cursor-pointer"
               title={isRu ? 'Apni progress report dekhein' : 'View your progress report'}
             >
               <FileText className="w-3.5 h-3.5" />
@@ -102,14 +102,14 @@ export const CareStreak: React.FC<CareStreakProps> = ({
               onClick={() => onToggleItem(item.id)}
               className={`relative p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col gap-1.5 ${
                 done
-                  ? 'bg-[#eaf3e4] border-[#bcd6ac] text-[#3c5535]'
+                  ? 'bg-[#e7f3fa] border-[#bcd6ac] text-[#245b80]'
                   : 'bg-white border-[#d6e7f7] text-[#334e68] hover:border-[#8cb7db]'
               }`}
             >
               <div className="flex items-center justify-between">
                 <span className="text-lg leading-none">{item.emoji}</span>
                 {done && (
-                  <span className="w-4.5 h-4.5 rounded-full bg-[#4c6b43] text-white flex items-center justify-center animate-pop-in">
+                  <span className="w-4.5 h-4.5 rounded-full bg-[#2b6f9f] text-white flex items-center justify-center animate-pop-in">
                     <Check className="w-3 h-3" />
                   </span>
                 )}

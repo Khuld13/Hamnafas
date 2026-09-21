@@ -338,7 +338,83 @@ class SoundscapesService {
     };
   }
 
-  toggleSoundscape(type: 'rain' | 'breeze' | 'river' | 'night' | 'fan' | 'tanpura' | null): string | null {
+
+  // Gentle musical patterns for mood support. These are not intended to
+  // "boost dopamine" directly; they use bright major/pentatonic harmony,
+  // moderate tempo, repetition and soft dynamics to create a more uplifting
+  // listening experience than a pure ambient soundscape.
+  private playMusicalPattern(mode: 'uplift' | 'sunrise' | 'flow'): () => void {
+    const ctx = this.initCtx();
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0.0001, ctx.currentTime);
+    master.gain.linearRampToValueAtTime(0.16, ctx.currentTime + 2);
+    master.connect(ctx.destination);
+
+    const configs = {
+      uplift: { bpm: 82, notes: [261.63, 329.63, 392.00, 493.88, 392.00, 329.63, 293.66, 329.63], label: 'uplift' },
+      sunrise: { bpm: 72, notes: [293.66, 329.63, 392.00, 440.00, 392.00, 329.63, 293.66, 261.63], label: 'sunrise' },
+      flow: { bpm: 68, notes: [220.00, 261.63, 293.66, 329.63, 293.66, 261.63, 196.00, 220.00], label: 'flow' },
+    } as const;
+    const cfg = configs[mode];
+    const stepMs = (60 / cfg.bpm) * 1000;
+    let step = 0;
+    let stopped = false;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    // A very soft sustained root/fifth bed makes the melody feel musical
+    // without turning the exercise into a loud song.
+    const padOscillators = [
+      { freq: mode === 'flow' ? 110 : 130.81, gain: 0.025 },
+      { freq: mode === 'flow' ? 165 : 196.00, gain: 0.018 },
+    ].map(({ freq, gain: level }) => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      g.gain.value = level;
+      osc.connect(g);
+      g.connect(master);
+      osc.start();
+      return osc;
+    });
+
+    const schedule = () => {
+      if (stopped) return;
+      const now = ctx.currentTime;
+      const freq = cfg.notes[step % cfg.notes.length];
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+      osc.type = mode === 'flow' ? 'sine' : 'triangle';
+      osc.frequency.setValueAtTime(freq, now);
+      filter.type = 'lowpass';
+      filter.frequency.value = mode === 'uplift' ? 1800 : 1400;
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.linearRampToValueAtTime(mode === 'uplift' ? 0.065 : 0.05, now + 0.035);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + (stepMs / 1000) * 0.82);
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(master);
+      osc.start(now);
+      osc.stop(now + (stepMs / 1000) * 0.9);
+      step += 1;
+      timers.push(setTimeout(schedule, stepMs));
+    };
+    schedule();
+
+    return () => {
+      stopped = true;
+      timers.forEach(clearTimeout);
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 1.2);
+      setTimeout(() => {
+        padOscillators.forEach((o) => { try { o.stop(); o.disconnect(); } catch {} });
+        try { master.disconnect(); } catch {}
+      }, 1300);
+    };
+  }
+
+  toggleSoundscape(type: 'rain' | 'breeze' | 'river' | 'night' | 'fan' | 'tanpura' | 'uplift' | 'sunrise' | 'flow' | null): string | null {
     if (this.currentPlaying) {
       if (this.activeNodes[this.currentPlaying]) {
         this.activeNodes[this.currentPlaying].stop();
@@ -357,6 +433,9 @@ class SoundscapesService {
       night: () => this.playNight(),
       fan: () => this.playFan(),
       tanpura: () => this.playTanpura(),
+      uplift: () => this.playMusicalPattern('uplift'),
+      sunrise: () => this.playMusicalPattern('sunrise'),
+      flow: () => this.playMusicalPattern('flow'),
     };
 
     if (type && players[type]) {
